@@ -3,7 +3,7 @@
   "main": "./src/main",
   "version": "0.0.0",
   "description": "Autocomplete for require/import statements",
-  "repository": "https://github.com/nkt/autocomplete-modules",
+  "repository": "https://github.com/nkt/atom-autocomplete-modules",
   "license": "MIT",
   "engines": {
     "atom": ">=0.174.0 <2.0.0"
