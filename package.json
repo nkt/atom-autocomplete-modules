@@ -1,0 +1,26 @@
+{
+  "name": "autocomplete-modules",
+  "main": "./src/main",
+  "version": "0.0.0",
+  "description": "Autocomplete for require/import statements",
+  "repository": "https://github.com/nkt/autocomplete-modules",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=0.174.0 <2.0.0"
+  },
+  "dependencies": {
+    "bluebird": "^2.9.24",
+    "fuzzaldrin": "^2.1.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^3.0.1",
+    "eslint": "^0.20.0"
+  },
+  "providedServices": {
+    "autocomplete.provider": {
+      "versions": {
+        "2.0.0": "getCompletionProvider"
+      }
+    }
+  }
+}
