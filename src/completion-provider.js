@@ -27,15 +27,25 @@ class CompletionProvider {
 
     const realPrefix = realPrefixMathes[1];
 
-    if (prefix[0] === '.') {
-      return this.lookupLocal(realPrefix);
+    if (realPrefix[0] === '.') {
+      return this.lookupLocal(realPrefix, editor.getPath());
     }
 
     return this.lookupGlobal(realPrefix);
   }
 
-  lookupLocal(prefix) {
-    return [];
+  lookupLocal(prefix, filename) {
+    const prefixDirname = path.dirname(prefix);
+    const filePrefix = prefix.replace(prefixDirname, '').replace('/', '');
+
+    return fs.readdirAsync(path.resolve(path.dirname(filename), prefixDirname)).map((dirname) => {
+      return {
+        text: dirname,
+        type: 'package'
+      };
+    }).then((suggestions) => {
+      return this.filterSuggestions(filePrefix, suggestions);
+    });
   }
 
   lookupGlobal(prefix) {
