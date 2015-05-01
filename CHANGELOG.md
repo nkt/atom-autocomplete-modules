@@ -1,3 +1,6 @@
+## v0.2.1
+* Remove local file extensions for js/coffee
+
 ## v0.2.0
 * Added local files lookup
 

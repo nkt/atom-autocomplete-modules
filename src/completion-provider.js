@@ -37,15 +37,20 @@ class CompletionProvider {
   lookupLocal(prefix, filename) {
     const prefixDirname = path.dirname(prefix);
     const filePrefix = prefix.replace(prefixDirname, '').replace('/', '');
+    const lookupDirname = path.resolve(path.dirname(filename), prefixDirname);
 
-    return fs.readdirAsync(path.resolve(path.dirname(filename), prefixDirname)).map((dirname) => {
+    return fs.readdirAsync(lookupDirname).map((pathname) => {
       return {
-        text: dirname,
+        text: this.normalizeLocal(pathname),
         type: 'package'
       };
     }).then((suggestions) => {
       return this.filterSuggestions(filePrefix, suggestions);
     });
+  }
+
+  normalizeLocal(filename) {
+    return filename.replace(/\.(js|es6|jsx|coffee)$/, '');
   }
 
   lookupGlobal(prefix) {
