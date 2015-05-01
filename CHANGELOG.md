@@ -1,4 +1,4 @@
-## v0.2.1
+## v0.2.2
 * Remove local file extensions for js/coffee
 
 ## v0.2.0
