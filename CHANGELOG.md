@@ -1,3 +1,6 @@
+## v0.3.0
+ * Added packages internal files lookup
+
 ## v0.2.2
 * Remove local file extensions for js/coffee
 
