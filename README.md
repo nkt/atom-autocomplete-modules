@@ -2,7 +2,7 @@
 
 Autocomplete for require/import statements.
 
-<img src="https://cloud.githubusercontent.com/assets/3505878/7442519/afb7cad8-f11d-11e4-88dc-4a959fefaf21.gif"/>
+![Preview](https://cloud.githubusercontent.com/assets/3505878/7442538/9c1892cc-f11e-11e4-8070-3fa8b79beefc.gif)
 
 License
 -------
