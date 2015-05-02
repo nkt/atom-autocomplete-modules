@@ -1,7 +1,7 @@
 'use babel';
 
 const Promise = require('bluebird');
-const fs = Promise.promisifyAll(require('fs'));
+const readdir = Promise.promisify(require('fs').readdir);
 const path = require('path');
 const fuzzaldrin = require('fuzzaldrin');
 const internalModules = require('./internal-modules');
@@ -28,24 +28,38 @@ class CompletionProvider {
     const realPrefix = realPrefixMathes[1];
 
     if (realPrefix[0] === '.') {
-      return this.lookupLocal(realPrefix, editor.getPath());
+      return this.lookupLocal(realPrefix, path.dirname(editor.getPath()));
     }
 
     return this.lookupGlobal(realPrefix);
   }
 
-  lookupLocal(prefix, filename) {
-    const prefixDirname = path.dirname(prefix);
-    const filePrefix = prefix.replace(prefixDirname, '').replace('/', '');
-    const lookupDirname = path.resolve(path.dirname(filename), prefixDirname);
+  filterSuggestions(prefix, suggestions) {
+    return fuzzaldrin.filter(suggestions, prefix, {
+      key: 'text',
+      maxResults: 5
+    });
+  }
 
-    return fs.readdirAsync(lookupDirname).map((pathname) => {
+  lookupLocal(prefix, dirname) {
+    let filterPrefix = prefix.replace(path.dirname(prefix), '').replace('/', '');
+    if (filterPrefix[filterPrefix.length - 1] === '/') {
+      filterPrefix = '';
+    }
+    const lookupDirname = path.resolve(dirname, prefix).replace(new RegExp(`${filterPrefix}$`), '');
+
+    return readdir(lookupDirname).map((pathname) => {
       return {
         text: this.normalizeLocal(pathname),
+        displayText: pathname,
         type: 'package'
       };
     }).then((suggestions) => {
-      return this.filterSuggestions(filePrefix, suggestions);
+      return this.filterSuggestions(filterPrefix, suggestions);
+    }).catch((e) => {
+      if (e.code !== 'ENOENT') {
+        throw e;
+      }
     });
   }
 
@@ -59,9 +73,12 @@ class CompletionProvider {
       return [];
     }
 
-    return fs.readdirAsync(path.join(projectPath, 'node_modules')).filter((dirname) => {
-      return dirname[0] !== '.';
-    }).then((libs) => {
+    const nodeModulesPath = path.join(projectPath, 'node_modules');
+    if (prefix.indexOf('/') !== -1) {
+      return this.lookupLocal(`./${prefix}`, nodeModulesPath);
+    }
+
+    return readdir(nodeModulesPath).then((libs) => {
       return libs.concat(internalModules);
     }).map((lib) => {
       return {
@@ -70,13 +87,10 @@ class CompletionProvider {
       };
     }).then((suggestions) => {
       return this.filterSuggestions(prefix, suggestions);
-    });
-  }
-
-  filterSuggestions(prefix, suggestions) {
-    return fuzzaldrin.filter(suggestions, prefix, {
-      key: 'text',
-      maxResults: 5
+    }).catch((e) => {
+      if (e.code !== 'ENOENT') {
+        throw e;
+      }
     });
   }
 }
