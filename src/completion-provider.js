@@ -48,7 +48,9 @@ class CompletionProvider {
     }
     const lookupDirname = path.resolve(dirname, prefix).replace(new RegExp(`${filterPrefix}$`), '');
 
-    return readdir(lookupDirname).map((pathname) => {
+    return readdir(lookupDirname).filter((filename) => {
+      return filename[0] !== '.';
+    }).map((pathname) => {
       return {
         text: this.normalizeLocal(pathname),
         displayText: pathname,
