@@ -4,6 +4,7 @@ const Promise = require('bluebird');
 const readdir = Promise.promisify(require('fs').readdir);
 const path = require('path');
 const fuzzaldrin = require('fuzzaldrin');
+const escapeRegExp = require('lodash.escaperegexp');
 const internalModules = require('./internal-modules');
 
 class CompletionProvider {
@@ -19,7 +20,7 @@ class CompletionProvider {
       return [];
     }
 
-    const realPrefixRegExp = new RegExp(`['"]((?:.+?)*${prefix})`);
+    const realPrefixRegExp = new RegExp(`['"]((?:.+?)*${escapeRegExp(prefix)})`);
     const realPrefixMathes = realPrefixRegExp.exec(line);
     if (!realPrefixMathes) {
       return [];

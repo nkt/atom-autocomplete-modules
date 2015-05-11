@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "bluebird": "^2.9.24",
-    "fuzzaldrin": "^2.1.0"
+    "fuzzaldrin": "^2.1.0",
+    "lodash.escaperegexp": "^3.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^3.0.1",
