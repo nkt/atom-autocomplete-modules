@@ -1,4 +1,7 @@
 # Atom autocomplete for modules.
+![Current version](https://img.shields.io/apm/v/autocomplete-modules.svg)
+![Downloads](https://img.shields.io/apm/dm/autocomplete-modules.svg)
+![MIT License](https://img.shields.io/apm/l/autocomplete-modules.svg)
 
 Autocomplete for require/import statements.
 
