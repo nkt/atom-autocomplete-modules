@@ -3,6 +3,14 @@
   "main": "./src/main",
   "version": "0.3.3",
   "description": "Autocomplete for require/import statements",
+  "keywords": [
+    "javascript",
+    "require",
+    "import",
+    "module",
+    "autocomplete",
+    "autocomplete-plus"
+  ],
   "repository": "https://github.com/nkt/atom-autocomplete-modules",
   "license": "MIT",
   "engines": {
