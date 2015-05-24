@@ -71,7 +71,7 @@ class CompletionProvider {
   }
 
   lookupGlobal(prefix) {
-    const projectPath = atom.project.getPath();
+    const projectPath = atom.project.getPaths()[0];
     if (!projectPath) {
       return [];
     }
