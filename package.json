@@ -9,7 +9,9 @@
     "import",
     "module",
     "autocomplete",
-    "autocomplete-plus"
+    "autocomplete-plus",
+    "npm",
+    "node"
   ],
   "repository": "https://github.com/nkt/atom-autocomplete-modules",
   "license": "MIT",
@@ -17,7 +19,7 @@
     "atom": ">=0.174.0 <2.0.0"
   },
   "dependencies": {
-    "bluebird": "^2.9.24",
+    "bluebird": "^2.9.30",
     "fuzzaldrin": "^2.1.0",
     "lodash.escaperegexp": "^3.0.0"
   },
