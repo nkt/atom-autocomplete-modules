@@ -21,18 +21,22 @@ class CompletionProvider {
     }
 
     const realPrefixRegExp = new RegExp(`['"]((?:.+?)*${escapeRegExp(prefix)})`);
-    const realPrefixMathes = realPrefixRegExp.exec(line);
-    if (!realPrefixMathes) {
+    try {
+      const realPrefixMathes = realPrefixRegExp.exec(line);
+      if (!realPrefixMathes) {
+        return [];
+      }
+
+      const realPrefix = realPrefixMathes[1];
+
+      if (realPrefix[0] === '.') {
+        return this.lookupLocal(realPrefix, path.dirname(editor.getPath()));
+      }
+
+      return this.lookupGlobal(realPrefix);
+    } catch (e) {
       return [];
     }
-
-    const realPrefix = realPrefixMathes[1];
-
-    if (realPrefix[0] === '.') {
-      return this.lookupLocal(realPrefix, path.dirname(editor.getPath()));
-    }
-
-    return this.lookupGlobal(realPrefix);
   }
 
   filterSuggestions(prefix, suggestions) {
