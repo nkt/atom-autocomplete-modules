@@ -1,10 +1,9 @@
 'use babel';
 
-const Promise = require('bluebird');
-const readdir = Promise.promisify(require('fs').readdir);
 const path = require('path');
 const fuzzaldrin = require('fuzzaldrin');
 const escapeRegExp = require('lodash.escaperegexp');
+const readdir = require('./readdir-cached');
 const internalModules = require('./internal-modules');
 
 class CompletionProvider {
