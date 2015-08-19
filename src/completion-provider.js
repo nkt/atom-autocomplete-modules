@@ -41,8 +41,7 @@ class CompletionProvider {
 
   filterSuggestions(prefix, suggestions) {
     return fuzzaldrin.filter(suggestions, prefix, {
-      key: 'text',
-      maxResults: 5
+      key: 'text'
     });
   }
 
