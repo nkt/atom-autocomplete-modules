@@ -9,14 +9,14 @@ const internalModules = require('./internal-modules');
 
 class CompletionProvider {
   constructor() {
-    this.selector = '.source.js .string.quoted, .source.coffee .string.quoted';
+    this.selector = '.source.js .string.quoted, .source.coffee .string.quoted, .source.css .meta.property-value .string.quoted';
     this.disableForSelector = '.source.js .comment, source.js .keyword';
     this.inclusionPriority = 1;
   }
 
   getSuggestions({editor, bufferPosition, prefix}) {
     const line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition]);
-    if (!/require|import/.test(line)) {
+    if (!/require|import|composes/.test(line)) {
       return [];
     }
 
