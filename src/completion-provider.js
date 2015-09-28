@@ -14,10 +14,22 @@ class CompletionProvider {
     this.inclusionPriority = 1;
   }
 
-  getSuggestions({editor, bufferPosition, prefix}) {
+  getSuggestions({editor, bufferPosition, prefix, scopeDescriptor}) {
     const line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition]);
-    if (!/require|import|composes/.test(line)) {
-      return [];
+
+    const sourceLanguage = scopeDescriptor.scopes[0]
+    switch (sourceLanguage) {
+      case 'source.js':
+          if (!/require|import/.test(line)) {
+            return [];
+          }
+        break;
+      case 'source.css':
+          if (!/composes/.test(line)) {
+            return [];
+          }
+        break;
+      default:
     }
 
     const realPrefixRegExp = new RegExp(`['"]((?:.+?)*${escapeRegExp(prefix)})`);
