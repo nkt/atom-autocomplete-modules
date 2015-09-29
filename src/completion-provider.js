@@ -44,6 +44,7 @@ class CompletionProvider {
     let testRegex;
     switch (languageScope) {
       case 'source.js':
+      case 'source.js.jsx':
         testRegex = /require|import/;
         break;
       case 'source.css':
