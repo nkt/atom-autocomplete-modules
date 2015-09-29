@@ -9,14 +9,15 @@ const internalModules = require('./internal-modules');
 
 class CompletionProvider {
   constructor() {
-    this.selector = '.source.js .string.quoted, .source.coffee .string.quoted';
+    this.selector = '.source.js .string.quoted, .source.coffee .string.quoted, .source.css .meta.property-value .string.quoted';
     this.disableForSelector = '.source.js .comment, source.js .keyword';
     this.inclusionPriority = 1;
   }
 
-  getSuggestions({editor, bufferPosition, prefix}) {
+  getSuggestions({editor, bufferPosition, prefix, scopeDescriptor}) {
     const line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition]);
-    if (!/require|import/.test(line)) {
+    const languageScope = scopeDescriptor.scopes[0]
+    if (!this.validateLineContext(line, languageScope)) {
       return [];
     }
 
@@ -37,6 +38,22 @@ class CompletionProvider {
     } catch (e) {
       return [];
     }
+  }
+
+  validateLineContext(line, languageScope) {
+    let testRegex;
+    switch (languageScope) {
+      case 'source.js':
+        testRegex = /require|import/;
+        break;
+      case 'source.css':
+        testRegex = /composes/;
+        break;
+      default:
+        return false;
+    }
+
+    return testRegex.test(line);
   }
 
   filterSuggestions(prefix, suggestions) {
