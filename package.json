@@ -19,9 +19,9 @@
     "atom": ">=0.174.0 <2.0.0"
   },
   "dependencies": {
-    "bluebird": "^2.9.30",
+    "bluebird": "^2.10.1",
     "fuzzaldrin": "^2.1.0",
-    "lodash.escaperegexp": "^3.0.0"
+    "lodash.escaperegexp": "^3.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^4.0.10",
