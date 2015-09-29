@@ -16,20 +16,9 @@ class CompletionProvider {
 
   getSuggestions({editor, bufferPosition, prefix, scopeDescriptor}) {
     const line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition]);
-
-    const sourceLanguage = scopeDescriptor.scopes[0]
-    switch (sourceLanguage) {
-      case 'source.js':
-          if (!/require|import/.test(line)) {
-            return [];
-          }
-        break;
-      case 'source.css':
-          if (!/composes/.test(line)) {
-            return [];
-          }
-        break;
-      default:
+    const languageScope = scopeDescriptor.scopes[0]
+    if (!this.validateLineContext(line, languageScope)) {
+      return [];
     }
 
     const realPrefixRegExp = new RegExp(`['"]((?:.+?)*${escapeRegExp(prefix)})`);
@@ -49,6 +38,22 @@ class CompletionProvider {
     } catch (e) {
       return [];
     }
+  }
+
+  validateLineContext(line, languageScope) {
+    let testRegex;
+    switch (languageScope) {
+      case 'source.js':
+        testRegex = /require|import/;
+        break;
+      case 'source.css':
+        testRegex = /composes/;
+        break;
+      default:
+        return false;
+    }
+
+    return testRegex.test(line);
   }
 
   filterSuggestions(prefix, suggestions) {
