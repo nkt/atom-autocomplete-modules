@@ -16,7 +16,7 @@ class CompletionProvider {
 
   getSuggestions({editor, bufferPosition, prefix}) {
     const line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition]);
-    if (!/require|import/.test(line)) {
+    if (!/require|import|export\s+(\*|{[a-zA-Z0-9_$,\s]+})+\s+from/.test(line)) {
       return [];
     }
 
