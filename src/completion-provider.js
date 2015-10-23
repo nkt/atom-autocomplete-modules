@@ -11,7 +11,7 @@ const MODULE_REGEXP = /require|import|export\s+(\*|{[a-zA-Z0-9_$,\s]+})+\s+from/
 
 class CompletionProvider {
   constructor() {
-    this.selector = '.source.js .string.quoted, .source.coffee .string.quoted';
+    this.selector = '.source.js .string.quoted, .source.coffee .string.quoted, .source.css .string.quoted';
     this.disableForSelector = '.source.js .comment, source.js .keyword';
     this.inclusionPriority = 1;
   }
