@@ -24,14 +24,13 @@
     "lodash.escaperegexp": "^3.0.1"
   },
   "devDependencies": {
-    "babel-eslint": "^4.0.10",
     "eslint": "^1.2.0",
-    "eslint-config-airbnb": "0.0.7"
+    "eslint-config-nkt": "^0.10.1"
   },
   "providedServices": {
     "autocomplete.provider": {
       "versions": {
-        "2.0.0": "getCompletionProvider"
+        "2.0.0": "getCompletionProviders"
       }
     }
   }

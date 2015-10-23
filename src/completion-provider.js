@@ -7,16 +7,18 @@ const fuzzaldrin = require('fuzzaldrin');
 const escapeRegExp = require('lodash.escaperegexp');
 const internalModules = require('./internal-modules');
 
+const MODULE_REGEXP = /require|import|export\s+(\*|{[a-zA-Z0-9_$,\s]+})+\s+from/;
+
 class CompletionProvider {
   constructor() {
-    this.selector = '.source.js .string.quoted, .source.coffee .string.quoted';
+    this.selector = '.source.js .string.quoted, .source.coffee .string.quoted, .source.css .string.quoted';
     this.disableForSelector = '.source.js .comment, source.js .keyword';
     this.inclusionPriority = 1;
   }
 
   getSuggestions({editor, bufferPosition, prefix}) {
     const line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition]);
-    if (!/require|import|export\s+(\*|{[a-zA-Z0-9_$,\s]+})+\s+from/.test(line)) {
+    if (!MODULE_REGEXP.test(line)) {
       return [];
     }
 
@@ -80,7 +82,7 @@ class CompletionProvider {
     }
 
     const nodeModulesPath = path.join(projectPath, 'node_modules');
-    if (prefix.indexOf('/') !== -1) {
+    if (prefix.includes('/')) {
       return this.lookupLocal(`./${prefix}`, nodeModulesPath);
     }
 
