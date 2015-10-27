@@ -7,6 +7,8 @@ const fuzzaldrin = require('fuzzaldrin');
 const escapeRegExp = require('lodash.escaperegexp');
 const internalModules = require('./internal-modules');
 
+const LINE_REGEXP = /require|import|export\s+(?:\*|{[a-zA-Z0-9_$,\s]+})+\s+from|}\s*from\s*['"]/;
+
 class CompletionProvider {
   constructor() {
     this.selector = '.source.js .string.quoted, .source.coffee .string.quoted';
@@ -16,7 +18,7 @@ class CompletionProvider {
 
   getSuggestions({editor, bufferPosition, prefix}) {
     const line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition]);
-    if (!/require|import|export\s+(\*|{[a-zA-Z0-9_$,\s]+})+\s+from/.test(line)) {
+    if (!LINE_REGEXP.test(line)) {
       return [];
     }
 
