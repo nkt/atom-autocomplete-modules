@@ -3,6 +3,18 @@
 const CompletionProvider = require('./completion-provider');
 
 class AutocompleteModulesPlugin {
+  constructor() {
+    this.config = {
+      vendors: {
+        type: 'array',
+        default: ['node_modules'],
+        items: {
+          type: 'string'
+        }
+      }
+    };
+  }
+
   activate() {
     this.completionProvider = new CompletionProvider();
   }
