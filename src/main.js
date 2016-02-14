@@ -6,6 +6,8 @@ class AutocompleteModulesPlugin {
   constructor() {
     this.config = {
       vendors: {
+        title: 'Vendor directories',
+        description: 'A list of directories to search for modules relative to the project root.',
         type: 'array',
         default: ['node_modules'],
         items: {

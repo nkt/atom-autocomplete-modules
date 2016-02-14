@@ -90,7 +90,6 @@ class CompletionProvider {
     if (prefix.indexOf('/') !== -1) {
       return this.lookupLocal(`./${prefix}`, vendorPath);
     }
-    console.log('!!!', prefix, vendorPath);
 
     return readdir(vendorPath).then((libs) => {
       return libs.concat(internalModules);
