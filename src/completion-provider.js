@@ -37,13 +37,13 @@ class CompletionProvider {
 
       const vendors = atom.config.get('autocomplete-modules.vendors');
 
-      let promises = vendors.map(vendor => {
-        return this.lookupGlobal(realPrefix, vendor);
-      });
+      const promises = vendors.map(
+        (vendor) => this.lookupGlobal(realPrefix, vendor)
+      );
 
-      return Promise.all(promises).then(suggestions => {
-        return suggestions.reduce((prev, curr) => prev.concat(curr), []);
-      });
+      return Promise.all(promises).then(
+        (suggestions) => [].concat(...suggestions)
+      );
     } catch (e) {
       return [];
     }
@@ -62,17 +62,15 @@ class CompletionProvider {
     }
     const lookupDirname = path.resolve(dirname, prefix).replace(new RegExp(`${filterPrefix}$`), '');
 
-    return readdir(lookupDirname).filter((filename) => {
-      return filename[0] !== '.';
-    }).map((pathname) => {
-      return {
-        text: this.normalizeLocal(pathname),
-        displayText: pathname,
-        type: 'package'
-      };
-    }).then((suggestions) => {
-      return this.filterSuggestions(filterPrefix, suggestions);
-    }).catch((e) => {
+    return readdir(lookupDirname).filter(
+      (filename) => filename[0] !== '.'
+    ).map((pathname) => ({
+      text: this.normalizeLocal(pathname),
+      displayText: pathname,
+      type: 'package'
+    })).then(
+      (suggestions) => this.filterSuggestions(filterPrefix, suggestions)
+    ).catch((e) => {
       if (e.code !== 'ENOENT') {
         throw e;
       }
@@ -95,16 +93,14 @@ class CompletionProvider {
       return this.lookupLocal(`./${prefix}`, vendorPath);
     }
 
-    return readdir(vendorPath).then((libs) => {
-      return libs.concat(internalModules);
-    }).map((lib) => {
-      return {
-        text: lib,
-        type: 'package'
-      };
-    }).then((suggestions) => {
-      return this.filterSuggestions(prefix, suggestions);
-    }).catch((e) => {
+    return readdir(vendorPath).then(
+      (libs) => libs.concat(internalModules)
+    ).map((lib) => ({
+      text: lib,
+      type: 'package'
+    })).then(
+      (suggestions) => this.filterSuggestions(prefix, suggestions)
+    ).catch((e) => {
       if (e.code !== 'ENOENT') {
         throw e;
       }
