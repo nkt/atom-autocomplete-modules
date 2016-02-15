@@ -5,6 +5,7 @@ const readdir = Promise.promisify(require('fs').readdir);
 const path = require('path');
 const fuzzaldrin = require('fuzzaldrin');
 const escapeRegExp = require('lodash.escaperegexp');
+const get = require('lodash.get');
 const internalModules = require('./internal-modules');
 
 const LINE_REGEXP = /require|import|export\s+(?:\*|{[a-zA-Z0-9_$,\s]+})+\s+from|}\s*from\s*['"]/;
@@ -127,7 +128,7 @@ class CompletionProvider {
     const vendors = atom.config.get('autocomplete-modules.vendors');
 
     const webpackConfig = require(webpackConfigPath);
-    let moduleSearchPaths = webpackConfig.resolve.modulesDirectories;
+    let moduleSearchPaths = get(webpackConfig, 'resolve.modulesDirectories', []);
 
     moduleSearchPaths = moduleSearchPaths.filter(
       (item) => vendors.indexOf(item) === -1
