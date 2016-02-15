@@ -35,7 +35,15 @@ class CompletionProvider {
         return this.lookupLocal(realPrefix, path.dirname(editor.getPath()));
       }
 
-      return this.lookupGlobal(realPrefix);
+      const vendors = atom.config.get('autocomplete-modules.vendors');
+
+      let promises = vendors.map(vendor => {
+        return this.lookupGlobal(realPrefix, vendor);
+      });
+
+      return Promise.all(promises).then(suggestions => {
+        return suggestions.reduce((prev, curr) => prev.concat(curr), []);
+      });
     } catch (e) {
       return [];
     }
@@ -75,18 +83,19 @@ class CompletionProvider {
     return filename.replace(/\.(js|es6|jsx|coffee)$/, '');
   }
 
-  lookupGlobal(prefix) {
+  lookupGlobal(prefix, vendor = 'node_modules') {
     const projectPath = atom.project.getPaths()[0];
     if (!projectPath) {
-      return [];
+      return Promise.resolve([]);
     }
 
-    const nodeModulesPath = path.join(projectPath, 'node_modules');
+    const vendorPath = path.join(projectPath, vendor);
+
     if (prefix.indexOf('/') !== -1) {
-      return this.lookupLocal(`./${prefix}`, nodeModulesPath);
+      return this.lookupLocal(`./${prefix}`, vendorPath);
     }
 
-    return readdir(nodeModulesPath).then((libs) => {
+    return readdir(vendorPath).then((libs) => {
       return libs.concat(internalModules);
     }).map((lib) => {
       return {
