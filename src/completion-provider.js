@@ -84,7 +84,11 @@ class CompletionProvider {
   }
 
   lookupGlobal(prefix, vendor = 'node_modules') {
-    const projectPath = atom.project.getPaths()[0] || [];
+    const projectPath = atom.project.getPaths()[0];
+    if (!projectPath) {
+      return Promise.resolve([]);
+    }
+
     const vendorPath = path.join(projectPath, vendor);
 
     if (prefix.indexOf('/') !== -1) {
