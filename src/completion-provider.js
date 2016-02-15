@@ -1,10 +1,9 @@
 'use babel';
 
-const Promise = require('bluebird');
-const readdir = Promise.promisify(require('fs').readdir);
 const path = require('path');
 const fuzzaldrin = require('fuzzaldrin');
 const escapeRegExp = require('lodash.escaperegexp');
+const readdir = require('./readdir-cached');
 const internalModules = require('./internal-modules');
 
 const LINE_REGEXP = /require|import|export\s+(?:\*|{[a-zA-Z0-9_$,\s]+})+\s+from|}\s*from\s*['"]/;
