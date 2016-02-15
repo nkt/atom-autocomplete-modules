@@ -60,9 +60,16 @@ class CompletionProvider {
     if (filterPrefix[filterPrefix.length - 1] === '/') {
       filterPrefix = '';
     }
+
     const lookupDirname = path.resolve(dirname, prefix).replace(new RegExp(`${filterPrefix}$`), '');
 
-    return readdir(lookupDirname).filter(
+    return readdir(lookupDirname).catch((e) => {
+      if (e.code !== 'ENOENT') {
+        throw e;
+      }
+
+      return [];
+    }).filter(
       (filename) => filename[0] !== '.'
     ).map((pathname) => ({
       text: this.normalizeLocal(pathname),
@@ -70,11 +77,7 @@ class CompletionProvider {
       type: 'package'
     })).then(
       (suggestions) => this.filterSuggestions(filterPrefix, suggestions)
-    ).catch((e) => {
-      if (e.code !== 'ENOENT') {
-        throw e;
-      }
-    });
+    );
   }
 
   normalizeLocal(filename) {
@@ -88,23 +91,24 @@ class CompletionProvider {
     }
 
     const vendorPath = path.join(projectPath, vendor);
-
     if (prefix.indexOf('/') !== -1) {
       return this.lookupLocal(`./${prefix}`, vendorPath);
     }
 
-    return readdir(vendorPath).then(
-      (libs) => libs.concat(internalModules)
+    return readdir(vendorPath).catch((e) => {
+      if (e.code !== 'ENOENT') {
+        throw e;
+      }
+
+      return [];
+    }).then(
+      (libs) => [...internalModules, ...libs]
     ).map((lib) => ({
       text: lib,
       type: 'package'
     })).then(
       (suggestions) => this.filterSuggestions(prefix, suggestions)
-    ).catch((e) => {
-      if (e.code !== 'ENOENT') {
-        throw e;
-      }
-    });
+    );
   }
 }
 
