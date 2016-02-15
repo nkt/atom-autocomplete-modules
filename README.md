@@ -11,6 +11,10 @@ Autocomplete for require/import statements.
 **Vendor directories:** A list of directories to search for modules relative to the project
   root. (*Default:* `node_modules`)
 
+**Webpack support:** Look for webpack configuration file and add the `resolve.modulesDirectories` paths to the module search scope.
+
+**Webpack configuration filename:** Name of the configuration file to look for. (*Default:* `webpack.config.js`)
+
 License
 -------
 [![MIT License](https://img.shields.io/apm/l/autocomplete-modules.svg)](LICENSE)
