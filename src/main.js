@@ -13,6 +13,18 @@ class AutocompleteModulesPlugin {
         items: {
           type: 'string'
         }
+      },
+      webpack: {
+        title: 'Webpack support',
+        description: 'Attempts to use the given webpack configuration file resolution settings to search for modules.',
+        type: 'boolean',
+        default: false
+      },
+      webpackConfigFilename: {
+        title: 'Webpack configuration filename',
+        description: 'When "Webpack support" is enabled this is the config file used to supply module search paths.',
+        type: 'string',
+        default: 'webpack.config.js'
       }
     };
   }

@@ -5,6 +5,7 @@ const readdir = Promise.promisify(require('fs').readdir);
 const path = require('path');
 const fuzzaldrin = require('fuzzaldrin');
 const escapeRegExp = require('lodash.escaperegexp');
+const get = require('lodash.get');
 const internalModules = require('./internal-modules');
 
 const LINE_REGEXP = /require|import|export\s+(?:\*|{[a-zA-Z0-9_$,\s]+})+\s+from|}\s*from\s*['"]/;
@@ -40,6 +41,11 @@ class CompletionProvider {
       const promises = vendors.map(
         (vendor) => this.lookupGlobal(realPrefix, vendor)
       );
+
+      const webpack = atom.config.get('autocomplete-modules.webpack');
+      if (webpack) {
+        promises.push(this.lookupWebpack(realPrefix));
+      }
 
       return Promise.all(promises).then(
         (suggestions) => [].concat(...suggestions)
@@ -109,6 +115,36 @@ class CompletionProvider {
     })).then(
       (suggestions) => this.filterSuggestions(prefix, suggestions)
     );
+  }
+
+  lookupWebpack(prefix) {
+    const projectPath = atom.project.getPaths()[0];
+    if (!projectPath) {
+      return Promise.resolve([]);
+    }
+
+    const vendors = atom.config.get('autocomplete-modules.vendors');
+    const webpackConfig = this.fetchWebpackConfig(projectPath);
+
+    let moduleSearchPaths = get(webpackConfig, 'resolve.modulesDirectories', []);
+    moduleSearchPaths = moduleSearchPaths.filter(
+      (item) => vendors.indexOf(item) === -1
+    );
+
+    return Promise.all(moduleSearchPaths.map(
+      (searchPath) => this.lookupLocal(prefix, searchPath)
+    )).then((suggestions) => [].concat(...suggestions));
+  }
+
+  fetchWebpackConfig(rootPath) {
+    const webpackConfigFilename = atom.config.get('autocomplete-modules.webpackConfigFilename');
+    const webpackConfigPath = path.join(rootPath, webpackConfigFilename);
+
+    try {
+      return require(webpackConfigPath);
+    } catch (error) {
+      return {};
+    }
   }
 }
 
