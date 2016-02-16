@@ -133,7 +133,9 @@ class CompletionProvider {
 
     return Promise.all(moduleSearchPaths.map(
       (searchPath) => this.lookupLocal(prefix, searchPath)
-    )).then((suggestions) => [].concat(...suggestions));
+    )).then(
+      (suggestions) => [].concat(...suggestions)
+    );
   }
 
   fetchWebpackConfig(rootPath) {
