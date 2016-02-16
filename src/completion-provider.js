@@ -123,13 +123,10 @@ class CompletionProvider {
       return Promise.resolve([]);
     }
 
-    const webpackConfigFilename = atom.config.get('autocomplete-modules.webpackConfigFilename');
-    const webpackConfigPath = path.join(projectPath, webpackConfigFilename);
     const vendors = atom.config.get('autocomplete-modules.vendors');
+    const webpackConfig = this.fetchWebpackConfig(projectPath);
 
-    const webpackConfig = require(webpackConfigPath);
     let moduleSearchPaths = get(webpackConfig, 'resolve.modulesDirectories', []);
-
     moduleSearchPaths = moduleSearchPaths.filter(
       (item) => vendors.indexOf(item) === -1
     );
@@ -137,6 +134,17 @@ class CompletionProvider {
     return Promise.all(moduleSearchPaths.map(
       (searchPath) => this.lookupLocal(prefix, searchPath)
     )).then((suggestions) => [].concat(...suggestions));
+  }
+
+  fetchWebpackConfig(rootPath) {
+    const webpackConfigFilename = atom.config.get('autocomplete-modules.webpackConfigFilename');
+    const webpackConfigPath = path.join(rootPath, webpackConfigFilename);
+
+    try {
+      return require(webpackConfigPath);
+    } catch (error) {
+      return {};
+    }
   }
 }
 
