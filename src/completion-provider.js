@@ -7,6 +7,7 @@ const fuzzaldrin = require('fuzzaldrin');
 const escapeRegExp = require('lodash.escaperegexp');
 const get = require('lodash.get');
 const internalModules = require('./internal-modules');
+const requireNew = require('require-new');
 
 const LINE_REGEXP = /require|import|export\s+(?:\*|{[a-zA-Z0-9_$,\s]+})+\s+from|}\s*from\s*['"]/;
 
@@ -141,7 +142,7 @@ class CompletionProvider {
     const webpackConfigPath = path.join(rootPath, webpackConfigFilename);
 
     try {
-      return require(webpackConfigPath);
+      return requireNew(webpackConfigPath);
     } catch (error) {
       return {};
     }
