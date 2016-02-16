@@ -22,7 +22,8 @@
     "bluebird": "3.3.1",
     "fuzzaldrin": "2.1.0",
     "lodash.escaperegexp": "4.1.0",
-    "lodash.get": "4.1.0"
+    "lodash.get": "4.1.0",
+    "require-new": "^1.1.0"
   },
   "devDependencies": {
     "babel-eslint": "^4.1.8",
