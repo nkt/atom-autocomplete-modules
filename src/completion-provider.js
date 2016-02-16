@@ -23,35 +23,42 @@ class CompletionProvider {
       return [];
     }
 
-    const realPrefixRegExp = new RegExp(`['"]((?:.+?)*${escapeRegExp(prefix)})`);
+    const realPrefix = this.getRealPrefix(prefix, line);
+    if (!realPrefix) {
+      return [];
+    }
+
+    if (realPrefix[0] === '.') {
+      return this.lookupLocal(realPrefix, path.dirname(editor.getPath()));
+    }
+
+    const vendors = atom.config.get('autocomplete-modules.vendors');
+
+    const promises = vendors.map(
+      (vendor) => this.lookupGlobal(realPrefix, vendor)
+    );
+
+    const webpack = atom.config.get('autocomplete-modules.webpack');
+    if (webpack) {
+      promises.push(this.lookupWebpack(realPrefix));
+    }
+
+    return Promise.all(promises).then(
+      (suggestions) => [].concat(...suggestions)
+    );
+  }
+
+  getRealPrefix(prefix, line) {
     try {
+      const realPrefixRegExp = new RegExp(`['"]((?:.+?)*${escapeRegExp(prefix)})`);
       const realPrefixMathes = realPrefixRegExp.exec(line);
       if (!realPrefixMathes) {
-        return [];
+        return false;
       }
 
-      const realPrefix = realPrefixMathes[1];
-
-      if (realPrefix[0] === '.') {
-        return this.lookupLocal(realPrefix, path.dirname(editor.getPath()));
-      }
-
-      const vendors = atom.config.get('autocomplete-modules.vendors');
-
-      const promises = vendors.map(
-        (vendor) => this.lookupGlobal(realPrefix, vendor)
-      );
-
-      const webpack = atom.config.get('autocomplete-modules.webpack');
-      if (webpack) {
-        promises.push(this.lookupWebpack(realPrefix));
-      }
-
-      return Promise.all(promises).then(
-        (suggestions) => [].concat(...suggestions)
-      );
+      return realPrefixMathes[1];
     } catch (e) {
-      return [];
+      return false;
     }
   }
 
