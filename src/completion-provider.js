@@ -13,11 +13,13 @@ const SELECTOR = [
   '.source.js .string.quoted',
   // for babel-language plugin
   '.source.js .punctuation.definition.string.begin',
+  '.source.ts .string.quoted',
   '.source.coffee .string.quoted'
 ];
 const SELECTOR_DISABLE = [
   '.source.js .comment',
   '.source.js .keyword',
+  '.source.ts .comment',
   '.source.ts .keyword'
 ];
 
