@@ -9,11 +9,22 @@ const get = require('lodash.get');
 const internalModules = require('./internal-modules');
 
 const LINE_REGEXP = /require|import|export\s+(?:\*|{[a-zA-Z0-9_$,\s]+})+\s+from|}\s*from\s*['"]/;
+const SELECTOR = [
+  '.source.js .string.quoted',
+  // for babel-language plugin
+  '.source.js .punctuation.definition.string.begin',
+  '.source.coffee .string.quoted'
+];
+const SELECTOR_DISABLE = [
+  '.source.js .comment',
+  '.source.js .keyword',
+  '.source.ts .keyword'
+];
 
 class CompletionProvider {
   constructor() {
-    this.selector = '.source.js .string.quoted, .source.js .punctuation.definition.string.begin, .source.coffee .string.quoted';
-    this.disableForSelector = '.source.js .comment, source.js .keyword';
+    this.selector = SELECTOR.join(', ');
+    this.disableForSelector = SELECTOR_DISABLE.join(', ');
     this.inclusionPriority = 1;
   }
 
@@ -150,7 +161,7 @@ class CompletionProvider {
     const webpackConfigPath = path.join(rootPath, webpackConfigFilename);
 
     try {
-      return require(webpackConfigPath);
+      return require(webpackConfigPath); // eslint-disable-line
     } catch (error) {
       return {};
     }
