@@ -12,8 +12,8 @@ const LINE_REGEXP = /require|import|export\s+(?:\*|{[a-zA-Z0-9_$,\s]+})+\s+from|
 
 class CompletionProvider {
   constructor() {
-    this.selector = '.source.js .string.quoted, .source.coffee .string.quoted';
-    this.disableForSelector = '.source.js .comment, source.js .keyword';
+    this.selector = '.source.js .string.quoted, .source.ts .string.quoted, .source.coffee .string.quoted';
+    this.disableForSelector = '.source.js .comment, source.js .keyword, .source.ts .comment, source.ts .keyword';
     this.inclusionPriority = 1;
   }
 
@@ -94,7 +94,7 @@ class CompletionProvider {
   }
 
   normalizeLocal(filename) {
-    return filename.replace(/\.(js|es6|jsx|coffee)$/, '');
+    return filename.replace(/(\/index)?\.(js|es6|jsx|coffee|ts|tsx)$/, '');
   }
 
   lookupGlobal(prefix, vendor = 'node_modules') {
