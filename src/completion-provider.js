@@ -107,7 +107,7 @@ class CompletionProvider {
   }
 
   normalizeLocal(filename) {
-    return filename.replace(/\.(js|es6|jsx|coffee)$/, '');
+    return filename.replace(/\.(js|es6|jsx|coffee|ts|tsx)$/, '');
   }
 
   lookupGlobal(prefix, vendor = 'node_modules') {
