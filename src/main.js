@@ -5,6 +5,12 @@ const CompletionProvider = require('./completion-provider');
 class AutocompleteModulesPlugin {
   constructor() {
     this.config = {
+      includeExtension: {
+        title: 'Include file extension',
+        description: "Include the file's extension when filling in the completion.",
+        type: 'boolean',
+        default: false
+      },
       vendors: {
         title: 'Vendor directories',
         description: 'A list of directories to search for modules relative to the project root.',
