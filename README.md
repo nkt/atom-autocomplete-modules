@@ -8,6 +8,8 @@ Autocomplete for require/import statements.
 
 ## Configuration
 
+**Include file extension:**  Include the file's extension when filling in the completion.
+
 **Vendor directories:** A list of directories to search for modules relative to the project
   root. (*Default:* `node_modules`)
 
