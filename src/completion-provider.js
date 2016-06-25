@@ -88,7 +88,10 @@ class CompletionProvider {
     }
 
     const includeExtension = atom.config.get('autocomplete-modules.includeExtension');
-    const lookupDirname = path.resolve(dirname, prefix).replace(new RegExp(`${filterPrefix}$`), '');
+    let lookupDirname = path.resolve(dirname, prefix);
+    if (filterPrefix) {
+      lookupDirname = lookupDirname.replace(new RegExp(`${escapeRegExp(filterPrefix)}$`), '');
+    }
 
     return readdir(lookupDirname).catch((e) => {
       if (e.code !== 'ENOENT') {
