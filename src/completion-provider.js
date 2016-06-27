@@ -5,8 +5,10 @@ const readdir = Promise.promisify(require('fs').readdir);
 const path = require('path');
 const fuzzaldrin = require('fuzzaldrin');
 const escapeRegExp = require('lodash.escaperegexp');
-const get = require('lodash.get');
 const internalModules = require('./internal-modules');
+
+const {getProjectPath, lookupLocal} = require('./helpers');
+const lookupWebpack = require('./webpack-lookup');
 
 const LINE_REGEXP = /require|import|export\s+(?:\*|{[a-zA-Z0-9_$,\s]+})+\s+from|}\s*from\s*['"]/;
 const SELECTOR = [
@@ -42,23 +44,21 @@ class CompletionProvider {
     }
 
     if (realPrefix[0] === '.') {
-      return this.lookupLocal(realPrefix, path.dirname(editor.getPath()));
+      return lookupLocal(realPrefix, path.dirname(editor.getPath()));
     }
 
+    // add vendor paths paths
     const vendors = atom.config.get('autocomplete-modules.vendors');
+    const promises = vendors.map((vendor) => this.lookupGlobal(realPrefix, vendor));
 
-    const promises = vendors.map(
-      (vendor) => this.lookupGlobal(realPrefix, vendor)
-    );
-
-    const webpack = atom.config.get('autocomplete-modules.webpack');
-    if (webpack) {
-      promises.push(this.lookupWebpack(realPrefix));
+    // add webpack resolve paths if needed
+    const webpackSupport = atom.config.get('autocomplete-modules.webpack');
+    if (webpackSupport) {
+      promises.push(lookupWebpack(realPrefix));
     }
 
-    return Promise.all(promises).then(
-      (suggestions) => [].concat(...suggestions)
-    );
+    return Promise.all(promises)
+      .then((suggestions) => [].concat(...suggestions));
   }
 
   getRealPrefix(prefix, line) {
@@ -81,48 +81,27 @@ class CompletionProvider {
     });
   }
 
-  lookupLocal(prefix, dirname) {
-    let filterPrefix = prefix.replace(path.dirname(prefix), '').replace('/', '');
-    if (filterPrefix[filterPrefix.length - 1] === '/') {
-      filterPrefix = '';
-    }
-
-    const includeExtension = atom.config.get('autocomplete-modules.includeExtension');
-    let lookupDirname = path.resolve(dirname, prefix);
-    if (filterPrefix) {
-      lookupDirname = lookupDirname.replace(new RegExp(`${escapeRegExp(filterPrefix)}$`), '');
-    }
-
-    return readdir(lookupDirname).catch((e) => {
-      if (e.code !== 'ENOENT') {
-        throw e;
-      }
-
-      return [];
-    }).filter(
-      (filename) => filename[0] !== '.'
-    ).map((pathname) => ({
-      text: includeExtension ? pathname : this.normalizeLocal(pathname),
-      displayText: pathname,
-      type: 'package'
-    })).then(
-      (suggestions) => this.filterSuggestions(filterPrefix, suggestions)
-    );
-  }
-
+  /**
+   * Normalize filename by stripping extensions
+   *
+   * @example 'someFile.js' => 'someFile'
+   * @param  {string} filename
+   * @return {string}
+   */
   normalizeLocal(filename) {
     return filename.replace(/\.(js|es6|jsx|coffee|ts|tsx)$/, '');
   }
 
   lookupGlobal(prefix, vendor = 'node_modules') {
-    const projectPath = atom.project.getPaths()[0];
+    const projectPath = getProjectPath();
+
     if (!projectPath) {
       return Promise.resolve([]);
     }
 
     const vendorPath = path.join(projectPath, vendor);
     if (prefix.indexOf('/') !== -1) {
-      return this.lookupLocal(`./${prefix}`, vendorPath);
+      return lookupLocal(`./${prefix}`, vendorPath);
     }
 
     return readdir(vendorPath).catch((e) => {
@@ -139,38 +118,6 @@ class CompletionProvider {
     })).then(
       (suggestions) => this.filterSuggestions(prefix, suggestions)
     );
-  }
-
-  lookupWebpack(prefix) {
-    const projectPath = atom.project.getPaths()[0];
-    if (!projectPath) {
-      return Promise.resolve([]);
-    }
-
-    const vendors = atom.config.get('autocomplete-modules.vendors');
-    const webpackConfig = this.fetchWebpackConfig(projectPath);
-
-    let moduleSearchPaths = get(webpackConfig, 'resolve.modulesDirectories', []);
-    moduleSearchPaths = moduleSearchPaths.filter(
-      (item) => vendors.indexOf(item) === -1
-    );
-
-    return Promise.all(moduleSearchPaths.map(
-      (searchPath) => this.lookupLocal(prefix, searchPath)
-    )).then(
-      (suggestions) => [].concat(...suggestions)
-    );
-  }
-
-  fetchWebpackConfig(rootPath) {
-    const webpackConfigFilename = atom.config.get('autocomplete-modules.webpackConfigFilename');
-    const webpackConfigPath = path.join(rootPath, webpackConfigFilename);
-
-    try {
-      return require(webpackConfigPath); // eslint-disable-line
-    } catch (error) {
-      return {};
-    }
   }
 }
 
