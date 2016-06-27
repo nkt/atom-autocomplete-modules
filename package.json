@@ -1,6 +1,6 @@
 {
   "name": "autocomplete-modules",
-  "main": "./src/main",
+  "main": "./index.js",
   "version": "1.5.2",
   "description": "Autocomplete for require/import statements",
   "keywords": [
