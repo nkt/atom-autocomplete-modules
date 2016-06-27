@@ -1,6 +1,6 @@
 {
   "name": "autocomplete-modules",
-  "main": "./src/main",
+  "main": "./index.js",
   "version": "1.5.2",
   "description": "Autocomplete for require/import statements",
   "keywords": [
@@ -18,16 +18,29 @@
   "engines": {
     "atom": ">=0.174.0 <2.0.0"
   },
+  "scripts": {
+    "lint": "eslint .",
+    "test": "mocha 'lib/**/*.test.js'",
+    "cover": "nyc npm run test",
+    "watch:test": "npm run test -- --watch",
+    "precommit": "npm run lint && npm run test",
+    "prepush": "npm run lint && npm run test"
+  },
   "dependencies": {
-    "bluebird": "3.4.0",
+    "bluebird": "3.4.1",
     "fuzzaldrin": "2.1.0",
     "lodash.escaperegexp": "4.1.1",
     "lodash.get": "4.3.0"
   },
   "devDependencies": {
     "babel-eslint": "^4.1.8",
+    "chai": "3.5.0",
     "eslint": "1.10.3",
-    "eslint-config-nkt": "1.0.0"
+    "eslint-config-nkt": "1.0.0",
+    "husky": "0.11.4",
+    "mocha": "2.5.3",
+    "nyc": "6.6.1",
+    "rewire": "2.5.1"
   },
   "providedServices": {
     "autocomplete.provider": {
