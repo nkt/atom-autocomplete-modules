@@ -75,15 +75,19 @@ class CompletionProvider {
     }
   }
 
+  /**
+   * Filter out suggestions paths that does not contain prefix
+   * @param  {string} prefix
+   * @param  {Object[]} suggestions
+   * @return {Object[]}
+   */
   filterSuggestions(prefix, suggestions) {
-    return fuzzaldrin.filter(suggestions, prefix, {
-      key: 'text'
-    });
+    const options = {key: 'text'};
+    return fuzzaldrin.filter(suggestions, prefix, options);
   }
 
   /**
    * Normalize filename by stripping extensions
-   *
    * @example 'someFile.js' => 'someFile'
    * @param  {string} filename
    * @return {string}
