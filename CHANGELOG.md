@@ -1,12 +1,28 @@
+## v1.6.0
+ * Added support for [Babel Plugin Module Alias](https://github.com/tleunen/babel-plugin-module-alias)
+
+## v1.5.2
+ * Allow include extensions to completions (.js, .ts, etc.)
+ * Fixed unescaped regexp. Fixed #31, #34, #35.
+
+## v1.5.1
+ * Added missing TypeScript extensions
+
+## v1.5.0
+ * Added TypeScript support
+
+## v0.3.0
+ * Added packages internal files lookup
+
 ## v0.3.0
  * Added packages internal files lookup
 
 ## v0.2.2
-* Remove local file extensions for js/coffee
+ * Removed local file extensions for js/coffee
 
 ## v0.2.0
-* Added local files lookup
+ * Added local files lookup
 
 ## v0.1.0 First Release
-* Added internal modules lookup
-* Added node_modules lookup
+ * Added internal modules lookup
+ * Added node_modules lookup
