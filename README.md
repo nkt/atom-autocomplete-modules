@@ -17,6 +17,8 @@ Autocomplete for require/import statements.
 
 **Webpack configuration filename:** Name of the configuration file to look for. (*Default:* `webpack.config.js`)
 
+**Babel Plugin Module Alias support:** Look for a [Babel Plugin Module Alias](https://github.com/tleunen/babel-plugin-module-alias) configuration and use it for the autocomplete suggestions.
+
 License
 -------
 [![MIT License](https://img.shields.io/apm/l/autocomplete-modules.svg)](LICENSE)

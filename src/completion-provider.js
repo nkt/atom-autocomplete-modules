@@ -6,6 +6,7 @@ const path = require('path');
 const fuzzaldrin = require('fuzzaldrin');
 const escapeRegExp = require('lodash.escaperegexp');
 const get = require('lodash.get');
+const findBabelConfig = require('find-babel-config');
 const internalModules = require('./internal-modules');
 
 const LINE_REGEXP = /require|import|export\s+(?:\*|{[a-zA-Z0-9_$,\s]+})+\s+from|}\s*from\s*['"]/;
@@ -54,6 +55,11 @@ class CompletionProvider {
     const webpack = atom.config.get('autocomplete-modules.webpack');
     if (webpack) {
       promises.push(this.lookupWebpack(realPrefix));
+    }
+
+    const babelPluginModuleAlias = atom.config.get('autocomplete-modules.babelPluginModuleAlias');
+    if (babelPluginModuleAlias) {
+      promises.push(this.lookupBabelPluginModuleAlias(realPrefix));
     }
 
     return Promise.all(promises).then(
@@ -171,6 +177,53 @@ class CompletionProvider {
     } catch (error) {
       return {};
     }
+  }
+
+  lookupBabelPluginModuleAlias(prefix) {
+    const projectPath = atom.project.getPaths()[0];
+    if (projectPath) {
+      const c = findBabelConfig(projectPath);
+      if (c && c.config && Array.isArray(c.config.plugins)) {
+        const pluginConfig = c.config.plugins.find(p => p[0] === 'module-alias');
+
+        // determine the right prefix
+        // `realPrefix` is the prefix we want to use to find the right file/suggestions
+        // when the prefix is a sub module (eg. module/subfile),
+        // `modulePrefix` will be "module", and `realPrefix` will be "subfile"
+        const prefixSplit = prefix.split('/');
+        const modulePrefix = prefixSplit[0];
+        const realPrefix = prefixSplit.pop();
+        const moduleSearchPath = prefixSplit.join('/');
+
+        // get the alias configs for the specific module
+        const aliasesConfig = pluginConfig[1].filter(alias => alias.expose.startsWith(modulePrefix));
+
+        return Promise.all(aliasesConfig.map(
+          (alias) => {
+            // The search path is the parent directory of the source directory specified in .babelrc
+            // then we append the `moduleSearchPath` to get the real search path
+            const searchPath = path.join(
+              path.dirname(path.resolve(projectPath, alias.src)),
+              moduleSearchPath
+            );
+
+            return this.lookupLocal(realPrefix, searchPath);
+          }
+        )).then(
+          (suggestions) => [].concat(...suggestions)
+        ).then(suggestions => {
+          if (prefix === realPrefix) {
+            // make sure the suggestions are from the compatible aliases
+            return suggestions.filter(sugg =>
+              aliasesConfig.find(a => a.expose === sugg.text)
+            );
+          }
+          return suggestions;
+        });
+      }
+    }
+
+    return Promise.resolve([]);
   }
 }
 
