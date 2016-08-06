@@ -1,3 +1,6 @@
+## v1.6.1
+ * Fix babel-plugin-module-alias support. Fixed #43.
+
 ## v1.6.0
  * Added support for [Babel Plugin Module Alias](https://github.com/tleunen/babel-plugin-module-alias)
 

@@ -185,6 +185,9 @@ class CompletionProvider {
       const c = findBabelConfig(projectPath);
       if (c && c.config && Array.isArray(c.config.plugins)) {
         const pluginConfig = c.config.plugins.find(p => p[0] === 'module-alias');
+        if (!pluginConfig) {
+          return Promise.resolve([]);
+        }
 
         // determine the right prefix
         // `realPrefix` is the prefix we want to use to find the right file/suggestions
