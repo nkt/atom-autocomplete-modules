@@ -48,8 +48,9 @@ class CompletionProvider {
 
     const vendors = atom.config.get('autocomplete-modules.vendors');
 
+    const currentFilePath = editor.buffer.file.path;
     const promises = vendors.map(
-      (vendor) => this.lookupGlobal(realPrefix, vendor)
+      (vendor) => this.lookupGlobal(realPrefix, currentFilePath, vendor)
     );
 
     const webpack = atom.config.get('autocomplete-modules.webpack');
@@ -120,8 +121,8 @@ class CompletionProvider {
     return filename.replace(/\.(js|es6|jsx|coffee|ts|tsx)$/, '');
   }
 
-  lookupGlobal(prefix, vendor = 'node_modules') {
-    const projectPath = atom.project.getPaths()[0];
+  lookupGlobal(prefix, currentFilePath, vendor = 'node_modules') {
+    const [projectPath] = atom.project.relativizePath(currentFilePath);
     if (!projectPath) {
       return Promise.resolve([]);
     }
