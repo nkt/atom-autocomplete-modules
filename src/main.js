@@ -36,10 +36,10 @@ class AutocompleteModulesPlugin {
         type: 'string',
         default: 'webpack.config.js'
       },
-      babelPluginModuleAlias: {
+      babelPluginModuleResolver: {
         order: 5,
-        title: 'Babel Plugin Module Alias support',
-        description: 'Use the <a href="https://github.com/tleunen/babel-plugin-module-alias">Babel Plugin Module Alias</a> configuration located in your `.babelrc` or in the babel configuration in `package.json`.',
+        title: 'Babel Plugin Module Resolver support',
+        description: 'Use the <a href="https://github.com/tleunen/babel-plugin-module-resolver">Babel Plugin Module Resolver</a> configuration located in your `.babelrc` or in the babel configuration in `package.json`.',
         type: 'boolean',
         default: false
       }
