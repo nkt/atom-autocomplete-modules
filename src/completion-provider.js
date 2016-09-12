@@ -7,13 +7,16 @@ const fuzzaldrin = require('fuzzaldrin');
 const escapeRegExp = require('lodash.escaperegexp');
 const get = require('lodash.get');
 const findBabelConfig = require('find-babel-config');
-const internalModules = require('./internal-modules');
+const internalModules = require('./utils/internal-modules');
 
 const LINE_REGEXP = /require|import|export\s+(?:\*|{?[a-zA-Z0-9_$,\s]+}?)+\s+from|}\s*from\s*['"]/;
 const SELECTOR = [
   '.source.js .string.quoted',
+
   // for babel-language plugin
+  '.source.js .punctuation.definition.string.end',
   '.source.js .punctuation.definition.string.begin',
+
   '.source.ts .string.quoted',
   '.source.coffee .string.quoted'
 ];
