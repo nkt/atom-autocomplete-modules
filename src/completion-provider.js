@@ -159,13 +159,14 @@ class CompletionProvider {
     const vendors = atom.config.get('autocomplete-modules.vendors');
     const webpackConfig = this.fetchWebpackConfig(projectPath);
 
+    const webpackRoot = get(webpackConfig, 'resolve.root', '');
     let moduleSearchPaths = get(webpackConfig, 'resolve.modulesDirectories', []);
     moduleSearchPaths = moduleSearchPaths.filter(
       (item) => vendors.indexOf(item) === -1
     );
 
     return Promise.all(moduleSearchPaths.map(
-      (searchPath) => this.lookupLocal(prefix, searchPath)
+      (searchPath) => this.lookupLocal(prefix, path.join(webpackRoot, searchPath))
     )).then(
       (suggestions) => [].concat(...suggestions)
     );
