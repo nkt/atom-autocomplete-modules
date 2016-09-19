@@ -1,0 +1,15 @@
+{
+  "root": true,
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "env": {
+    "node": true,
+    "atomtest": true
+  },
+  "globals": {
+    "atom": false
+  }
+}

@@ -20,15 +20,17 @@
   },
   "dependencies": {
     "bluebird": "3.4.6",
-    "find-babel-config": "^1.0.0",
+    "find-babel-config": "1.0.1",
     "fuzzaldrin": "2.1.0",
     "lodash.escaperegexp": "4.1.2",
     "lodash.get": "4.4.2"
   },
   "devDependencies": {
-    "babel-eslint": "^4.1.8",
-    "eslint": "1.10.3",
-    "eslint-config-nkt": "1.0.0"
+    "eslint": "3.6.1"
+  },
+  "scripts": {
+    "pretest": "eslint src/",
+    "test": "apm test"
   },
   "providedServices": {
     "autocomplete.provider": {
