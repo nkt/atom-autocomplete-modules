@@ -1,4 +1,6 @@
 # Atom autocomplete for modules.
+
+[![Build Status](https://circleci.com/gh/nkt/atom-autocomplete-modules/tree/master.svg?style=shield)](https://circleci.com/gh/nkt/atom-autocomplete-modules/tree/master)
 [![Current version](https://img.shields.io/apm/v/autocomplete-modules.svg)](https://atom.io/packages/autocomplete-modules)
 [![Downloads](https://img.shields.io/apm/dm/autocomplete-modules.svg)](https://atom.io/packages/autocomplete-modules)
 
