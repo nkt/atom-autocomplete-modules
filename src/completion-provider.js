@@ -113,7 +113,7 @@ class CompletionProvider {
     ).map((pathname) => ({
       text: includeExtension ? pathname : this.normalizeLocal(pathname),
       displayText: pathname,
-      type: 'package'
+      type: 'import'
     })).then(
       (suggestions) => this.filterSuggestions(filterPrefix, suggestions)
     );
@@ -144,7 +144,8 @@ class CompletionProvider {
       (libs) => [...internalModules, ...libs]
     ).map((lib) => ({
       text: lib,
-      type: 'package'
+      replacementPrefix: prefix,
+      type: 'import'
     })).then(
       (suggestions) => this.filterSuggestions(prefix, suggestions)
     );
