@@ -21,6 +21,8 @@ Autocomplete for require/import statements.
 
 **Babel Plugin Module Resolver support:** Look for a [Babel Plugin Module Resolver](https://github.com/tleunen/babel-plugin-module-resolver) configuration and use it for the autocomplete suggestions.
 
+**Statements:** A list of statements triggering the autocompletion (require/import/export are preset)
+
 License
 -------
 [![MIT License](https://img.shields.io/apm/l/autocomplete-modules.svg)](LICENSE)

@@ -9,6 +9,7 @@ const get = require('lodash.get');
 const findBabelConfig = require('find-babel-config');
 const internalModules = require('./utils/internal-modules');
 
+let CUSTOM_LINE_REGEXP;
 const LINE_REGEXP = /require|import|export\s+(?:\*|{[a-zA-Z0-9_$,\s]+})+\s+from|}\s*from\s*['"]/;
 const SELECTOR = [
   '.source.js .string.quoted',
@@ -32,11 +33,17 @@ class CompletionProvider {
     this.selector = SELECTOR.join(', ');
     this.disableForSelector = SELECTOR_DISABLE.join(', ');
     this.inclusionPriority = 1;
+
+    CUSTOM_LINE_REGEXP = buildCustomRegExp(atom.config.get('autocomplete-modules.customStatements'));
+
+    atom.config.onDidChange('autocomplete-modules.customStatements', ({ newValue }) => {
+      CUSTOM_LINE_REGEXP = buildCustomRegExp(newValue);
+    });
   }
 
   getSuggestions({editor, bufferPosition, prefix}) {
     const line = editor.getTextInRange([[bufferPosition.row, 0], bufferPosition]);
-    if (!LINE_REGEXP.test(line)) {
+    if (!checkLine(line)) {
       return [];
     }
 
@@ -255,6 +262,20 @@ class CompletionProvider {
       });
     }
   }
+}
+
+function buildCustomRegExp(statements){
+  if(statements.length === 0) return;
+
+  const pattern = statements
+    .map(statement => escapeRegExp(statement))
+    .join('|');
+
+  return new RegExp(pattern);
+}
+
+function checkLine(line){
+  return LINE_REGEXP.test(line) || CUSTOM_LINE_REGEXP && CUSTOM_LINE_REGEXP.test(line);
 }
 
 module.exports = CompletionProvider;
