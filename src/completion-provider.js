@@ -92,7 +92,7 @@ class CompletionProvider {
 
   lookupLocal(prefix, dirname) {
     let filterPrefix = prefix.replace(path.dirname(prefix), '').replace('/', '');
-    if (filterPrefix[filterPrefix.length - 1] === '/') {
+    if (prefix[prefix.length - 1] === '/') {
       filterPrefix = '';
     }
 
@@ -166,8 +166,8 @@ class CompletionProvider {
       (item) => vendors.indexOf(item) === -1
     );
 
-    return Promise.all(moduleSearchPaths.map(
-      (searchPath) => this.lookupLocal(prefix, path.join(webpackRoot, searchPath))
+    return Promise.all(moduleSearchPaths.concat(webpackRoot).map(
+      (searchPath) => this.lookupLocal(prefix, path.join(projectPath, searchPath))
     )).then(
       (suggestions) => [].concat(...suggestions)
     );
