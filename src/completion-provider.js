@@ -92,7 +92,7 @@ class CompletionProvider {
 
   lookupLocal(prefix, dirname) {
     let filterPrefix = prefix.replace(path.dirname(prefix), '').replace('/', '');
-    if (filterPrefix[filterPrefix.length - 1] === '/') {
+    if (prefix[prefix.length - 1] === '/') {
       filterPrefix = '';
     }
 
