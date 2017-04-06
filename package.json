@@ -38,5 +38,13 @@
         "2.0.0": "getCompletionProvider"
       }
     }
-  }
+  },
+  "activationHooks": [
+    "language-javascript:grammar-used",
+    "language-babel:grammar-used",
+    "language-coffee-script:grammar-used",
+    "language-ts:grammar-used",
+    "language-typescript-grammars-only:grammar-used",
+    "atom-typescript:grammar-used"
+  ]
 }
