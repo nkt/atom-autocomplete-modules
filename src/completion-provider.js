@@ -193,8 +193,10 @@ class CompletionProvider {
 
   lookupbabelPluginModuleResolver(prefix) {
     const projectPath = atom.project.getPaths()[0];
-    if (projectPath) {
-      return findBabelConfig(projectPath).then(({config}) => {
+    const editor = atom.workspace.getActivePaneItem()
+    const currentFile = editor.buffer.file
+    if (currentFile) {
+      return findBabelConfig(currentFile.path).then(({file, config}) => {
         if (config && Array.isArray(config.plugins)) {
           // Grab the v1 (module-alias) or v2 (module-resolver) plugin configuration
           const pluginConfig = config.plugins.find(p => p[0] === 'module-alias' || p[0] === 'babel-plugin-module-alias') ||
@@ -221,6 +223,7 @@ class CompletionProvider {
           const modulePrefix = prefixSplit[0];
           const realPrefix = prefixSplit.pop();
           const moduleSearchPath = prefixSplit.join('/');
+          const appRoot = file.replace('/.babelrc', '')
 
           // get the alias configs for the specific module
           const aliasConfig = Array.isArray(pluginConfig[1])
@@ -234,15 +237,12 @@ class CompletionProvider {
                 src: pluginConfig[1].alias[exp]
               }));
 
+
           return Promise.all(rootPromises.concat(aliasConfig.map(
             (alias) => {
               // The search path is the parent directory of the source directory specified in .babelrc
               // then we append the `moduleSearchPath` to get the real search path
-              const searchPath = path.join(
-                path.dirname(path.resolve(projectPath, alias.src)),
-                moduleSearchPath
-              );
-
+              const searchPath = path.resolve(appRoot, moduleSearchPath.replace(alias.expose, alias.src))
               return this.lookupLocal(realPrefix, searchPath);
             }
           ))).then(
