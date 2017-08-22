@@ -50,19 +50,20 @@ class CompletionProvider {
     }
 
     const vendors = atom.config.get('autocomplete-modules.vendors');
+    const activePanePath = atom.workspace.getActivePaneItem().buffer.file.path;
 
     const promises = vendors.map(
-      (vendor) => this.lookupGlobal(realPrefix, vendor)
+      (vendor) => this.lookupGlobal(realPrefix, activePanePath, vendor)
     );
 
     const webpack = atom.config.get('autocomplete-modules.webpack');
     if (webpack) {
-      promises.push(this.lookupWebpack(realPrefix));
+      promises.push(this.lookupWebpack(realPrefix, activePanePath));
     }
 
     const babelPluginModuleResolver = atom.config.get('autocomplete-modules.babelPluginModuleResolver');
     if (babelPluginModuleResolver) {
-      promises.push(this.lookupbabelPluginModuleResolver(realPrefix));
+      promises.push(this.lookupbabelPluginModuleResolver(realPrefix, activePanePath));
     }
 
     return Promise.all(promises).then(
@@ -123,8 +124,13 @@ class CompletionProvider {
     return filename.replace(/\.(js|es6|jsx|coffee|ts|tsx)$/, '');
   }
 
-  lookupGlobal(prefix, vendor = 'node_modules') {
-    const projectPath = atom.project.getPaths()[0];
+  getProjectPath(activePanePath) {
+    const [projectPath] = atom.project.relativizePath(activePanePath);
+    return projectPath;
+  }
+
+  lookupGlobal(prefix, activePanePath, vendor = 'node_modules') {
+    const projectPath = this.getProjectPath(activePanePath);
     if (!projectPath) {
       return Promise.resolve([]);
     }
@@ -151,8 +157,8 @@ class CompletionProvider {
     );
   }
 
-  lookupWebpack(prefix) {
-    const projectPath = atom.project.getPaths()[0];
+  lookupWebpack(prefix, activePanePath) {
+    const projectPath = this.getProjectPath(activePanePath);
     if (!projectPath) {
       return Promise.resolve([]);
     }
@@ -191,8 +197,8 @@ class CompletionProvider {
     }
   }
 
-  lookupbabelPluginModuleResolver(prefix) {
-    const projectPath = atom.project.getPaths()[0];
+  lookupbabelPluginModuleResolver(prefix, activePanePath) {
+    const projectPath = this.getProjectPath(activePanePath);
     if (projectPath) {
       return findBabelConfig(projectPath).then(({config}) => {
         if (config && Array.isArray(config.plugins)) {
