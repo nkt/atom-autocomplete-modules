@@ -50,20 +50,24 @@ class CompletionProvider {
     }
 
     const vendors = atom.config.get('autocomplete-modules.vendors');
-    const activePanePath = atom.workspace.getActivePaneItem().buffer.file.path;
+    const activePaneFile = atom.workspace.getActivePaneItem().buffer.file;
+    // in case user editing unsaved file
+    if (!activePaneFile) {
+      return [];
+    }
 
     const promises = vendors.map(
-      (vendor) => this.lookupGlobal(realPrefix, activePanePath, vendor)
+      (vendor) => this.lookupGlobal(realPrefix, activePaneFile.path, vendor)
     );
 
     const webpack = atom.config.get('autocomplete-modules.webpack');
     if (webpack) {
-      promises.push(this.lookupWebpack(realPrefix, activePanePath));
+      promises.push(this.lookupWebpack(realPrefix, activePaneFile.path));
     }
 
     const babelPluginModuleResolver = atom.config.get('autocomplete-modules.babelPluginModuleResolver');
     if (babelPluginModuleResolver) {
-      promises.push(this.lookupbabelPluginModuleResolver(realPrefix, activePanePath));
+      promises.push(this.lookupbabelPluginModuleResolver(realPrefix, activePaneFile.path));
     }
 
     return Promise.all(promises).then(
