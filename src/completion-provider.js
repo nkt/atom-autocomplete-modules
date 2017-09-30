@@ -18,13 +18,16 @@ const SELECTOR = [
   '.source.js .punctuation.definition.string.begin',
 
   '.source.ts .string.quoted',
+  '.source.tsx .string.quoted',
   '.source.coffee .string.quoted'
 ];
 const SELECTOR_DISABLE = [
   '.source.js .comment',
   '.source.js .keyword',
   '.source.ts .comment',
-  '.source.ts .keyword'
+  '.source.ts .keyword',
+  '.source.tsx .comment',
+  '.source.tsx .keyword'
 ];
 
 class CompletionProvider {
