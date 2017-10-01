@@ -233,7 +233,6 @@ class CompletionProvider {
           const prefixSplit = prefix.split('/');
           const modulePrefix = prefixSplit[0];
           const realPrefix = prefixSplit.pop();
-          const moduleSearchPath = prefixSplit.join('/');
 
           // get the alias configs for the specific module
           const aliasConfig = Array.isArray(pluginConfig[1])
@@ -250,24 +249,32 @@ class CompletionProvider {
           return Promise.all(rootPromises.concat(aliasConfig.map(
             (alias) => {
               // The search path is the parent directory of the source directory specified in .babelrc
-              // then we append the `moduleSearchPath` to get the real search path
-              const searchPath = path.join(
-                path.dirname(path.resolve(projectPath, alias.src)),
-                moduleSearchPath
-              );
+              const searchPath = path.resolve(projectPath, alias.src);
 
               return this.lookupLocal(realPrefix, searchPath);
             }
           ))).then(
             (suggestions) => [].concat(...suggestions)
           ).then(suggestions => {
+            const aliasSuggestions = aliasConfig.map((alias) => {
+              return {
+                text: alias.expose,
+                replacementPrefix: realPrefix,
+                type: "import"
+              }
+            });
+
             // make sure the suggestions are from the compatible alias
             if (prefix === realPrefix && aliasConfig.length) {
-              return suggestions.filter(sugg =>
+              suggestions = suggestions.filter(sugg =>
                 aliasConfig.find(a => a.expose === sugg.text)
               );
             }
-            return suggestions;
+
+            // Add the actual alias names to the suggestions
+            return modulePrefix !== realPrefix ?
+              suggestions :
+              aliasSuggestions.concat(suggestions);
           });
         }
 
