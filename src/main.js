@@ -42,6 +42,16 @@ class AutocompleteModulesPlugin {
         description: 'Use the <a href="https://github.com/tleunen/babel-plugin-module-resolver">Babel Plugin Module Resolver</a> configuration located in your `.babelrc` or in the babel configuration in `package.json`.',
         type: 'boolean',
         default: false
+      },
+      customStatements: {
+        order: 6,
+        title: 'Statements',
+        description: 'A list of statements triggering the autocompletion (require/import/export are preset)',
+        type: 'array',
+        default: [],
+        items: {
+          type: 'string'
+        }
       }
     };
   }
