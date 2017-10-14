@@ -249,11 +249,12 @@ class CompletionProvider {
 
           return Promise.all(rootPromises.concat(aliasConfig.map(
             (alias) => {
-              // The search path is the parent directory of the source directory specified in .babelrc
-              // then we append the `moduleSearchPath` to get the real search path
+              // The search path is the source directory specified in .babelrc
+              // then we append the `moduleSearchPath` (without the alias)
+              // to get the real search path
               const searchPath = path.join(
-                path.dirname(path.resolve(projectPath, alias.src)),
-                moduleSearchPath
+                path.resolve(projectPath, alias.src),
+                moduleSearchPath.replace(alias.expose, '')
               );
 
               return this.lookupLocal(realPrefix, searchPath);
