@@ -1,3 +1,6 @@
+## v1.8.0
+ * Added support for autocomplete by exports
+
 ## v1.6.1
  * Fix babel-plugin-module-alias support. Fixed #43.
 
