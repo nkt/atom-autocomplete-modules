@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-"@iamthes/inject@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@iamthes/inject/-/inject-1.0.1.tgz#341f11cb282c410a1162ca7976546f40405c8349"
-
 acorn-jsx@^3.0.0:
   version "3.0.1"
   resolved "https://registry.npmjs.org/acorn-jsx/-/acorn-jsx-3.0.1.tgz#afdf9488fb1ecefc8348f6fb22f464e32a58b36b"
@@ -278,14 +274,14 @@ eslint@3.6.1:
     text-table "~0.2.0"
     user-home "^2.0.0"
 
-esm-exports@^0.8.3:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/esm-exports/-/esm-exports-0.8.3.tgz#a20b6dbfbfbef4adc3ae12d988e0253ddfc1e7eb"
+esm-exports@0.8.4:
+  version "0.8.4"
+  resolved "https://registry.npmjs.org/esm-exports/-/esm-exports-0.8.4.tgz#1fee79152f5de28a5154dd80628c545f1b1939c5"
   dependencies:
-    "@iamthes/inject" "^1.0.1"
     lodash "^4.17.4"
+    njct "^1.0.0"
     resolve-pkg "^1.0.0"
-    typescript "2.2.1"
+    typescript "^2.6.1"
 
 espree@^3.3.1:
   version "3.5.1"
@@ -570,6 +566,10 @@ natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
 
+njct@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/njct/-/njct-1.0.0.tgz#5a7d4abd038473edac138594cca80744f9492de8"
+
 number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npmjs.org/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
@@ -690,9 +690,9 @@ resolve-pkg@^1.0.0:
   dependencies:
     resolve-from "^2.0.0"
 
-resolve@^1.5.0:
+resolve@1.5.0:
   version "1.5.0"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.5.0.tgz#1f09acce796c9a762579f31b2c1cc4c3cddf9f36"
+  resolved "https://registry.npmjs.org/resolve/-/resolve-1.5.0.tgz#1f09acce796c9a762579f31b2c1cc4c3cddf9f36"
   dependencies:
     path-parse "^1.0.5"
 
@@ -813,9 +813,9 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.2.1.tgz#4862b662b988a4c8ff691cc7969622d24db76ae9"
+typescript@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-2.6.1.tgz#ef39cdea27abac0b500242d6726ab90e0c846631"
 
 user-home@^2.0.0:
   version "2.0.0"
