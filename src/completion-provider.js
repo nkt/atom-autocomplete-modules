@@ -35,6 +35,9 @@ class CompletionProvider {
   }
 
   getSuggestions({editor, bufferPosition, prefix}) {
+    //NOTE: Workaround for autocomplete issue -> https://github.com/atom/autocomplete-plus/issues/855
+    prefix = prefix.trim().replace(/{|}/,'');
+
     const line = editor.buffer.lineForRow(bufferPosition.row);
     if (!LINE_REGEXP.test(line)) {
       return [];
