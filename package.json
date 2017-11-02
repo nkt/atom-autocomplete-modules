@@ -20,12 +20,11 @@
   },
   "dependencies": {
     "bluebird": "3.5.1",
-    "esm-exports": "0.8.4",
+    "esm-exports": "^0.8.4",
     "find-babel-config": "1.1.0",
     "fuzzaldrin": "2.1.0",
     "lodash.escaperegexp": "4.1.2",
-    "lodash.get": "4.4.2",
-    "resolve": "1.5.0"
+    "lodash.get": "4.4.2"
   },
   "devDependencies": {
     "eslint": "3.6.1"
