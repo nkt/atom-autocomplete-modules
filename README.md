@@ -21,6 +21,19 @@ Autocomplete for require/import statements.
 
 **Babel Plugin Module Resolver support:** Look for a [Babel Plugin Module Resolver](https://github.com/tleunen/babel-plugin-module-resolver) configuration and use it for the autocomplete suggestions.
 
+## Troubleshooting
+
+This package only activates if one of the following grammars/languages are being used:
+* [language-javascript](https://atom.io/packages/language-javascript)
+* [language-babel](https://atom.io/packages/language-babel)
+* [language-coffee-script](https://atom.io/packages/language-coffee-script)
+* [language-ts](https://atom.io/packages/language-ts)
+* [language-typescript-grammars-only](https://atom.io/packages/language-typescript-grammars-only)
+* [atom-typescript](https://atom.io/packages/atom-typescript)
+
+If this package doesn't seem to be working, check that you are using one of these.
+If you want another grammar/language to be supported, please submit an issue.
+
 License
 -------
 [![MIT License](https://img.shields.io/apm/l/autocomplete-modules.svg)](LICENSE)
