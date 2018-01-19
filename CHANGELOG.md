@@ -1,3 +1,6 @@
+## v1.10.0
+ * Added activation support for package [language-typescript](https://atom.io/packages/language-typescript)
+ 
 ## v1.9.0
  * Added support for looking up Webpack aliases
 
