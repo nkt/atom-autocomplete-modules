@@ -29,6 +29,7 @@ This package only activates if one of the following grammars/languages are being
 * [language-coffee-script](https://atom.io/packages/language-coffee-script)
 * [language-ts](https://atom.io/packages/language-ts)
 * [language-typescript-grammars-only](https://atom.io/packages/language-typescript-grammars-only)
+* [language-typescript](https://atom.io/packages/language-typescript)
 * [atom-typescript](https://atom.io/packages/atom-typescript)
 
 If this package doesn't seem to be working, check that you are using one of these.
