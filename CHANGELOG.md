@@ -1,3 +1,6 @@
+## v1.9.0
+ * Added support for looking up Webpack aliases
+
 ## v1.8.0
  * Added support for autocomplete by exports
 
