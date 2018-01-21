@@ -188,7 +188,24 @@ class CompletionProvider {
     }
 
     const vendors = atom.config.get('autocomplete-modules.vendors');
-    const webpackConfig = this.fetchWebpackConfig(projectPath);
+
+    let webpackConfig = this.fetchWebpackConfig(projectPath);
+
+    // Support webpack config exported as array
+    if (webpackConfig.constructor === Array) {
+      webpackConfig = webpackConfig.reduce((ret, cfg) => {
+        const alias = Object.assign(ret.resolve.alias, cfg.resolve.alias)
+        const modules = Object.assign(ret.resolve.modules, cfg.resolve.modules)
+        const root = Object.assign(ret.resolve.root, cfg.resolve.root)
+
+        const modulesDirectories = Object.assign(
+          ret.resolve.modulesDirectories,
+          cfg.resolve.modulesDirectories
+        )
+
+        Object.assign(ret, cfg, { resolve: { alias, modules, modulesDirectories, root } });
+      })
+    }
 
     // Webpack v2
     const webpackModules = get(webpackConfig, 'resolve.modules', []);
