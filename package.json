@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "bluebird": "3.5.1",
-    "esm-exports": "^0.8.4",
+    "esm-exports": "^2.0.3",
     "find-babel-config": "1.1.0",
     "fuzzaldrin": "2.1.0",
     "lodash.escaperegexp": "4.1.2",

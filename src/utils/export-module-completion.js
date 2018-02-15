@@ -6,7 +6,8 @@ const fs = require('fs');
 const PATH_SLASH = process.platform === 'win32' ? '\\' : '/';
 
 const escapeRegExp = require('lodash.escaperegexp');
-const { parseModule, parseFile } = require('esm-exports');
+const parseModule = require('esm-exports').module;
+const parseFile = require('esm-exports').file;
 
 const getRealExportPrefix = (prefix, line) => {
   try {
@@ -43,7 +44,7 @@ const getExports = (activePanePath, prefix, importModule) => {
 
 const lookupGlobal = (importModule, activePanePath) => {
   const projectPath = getProjectPath(activePanePath);
-  return parseModule(importModule, {dirname: projectPath})
+  return parseModule(importModule, {basedir: projectPath})
     .then(results => {
       if (results.length > 0) {
         return results.map(entry => entry.name);
@@ -55,9 +56,16 @@ const lookupGlobal = (importModule, activePanePath) => {
 };
 
 const getMainFileName = (nodeModulePath) => {
-  const content = fs.readFileSync(path.resolve(nodeModulePath, 'package.json'), {encoding: 'utf8'});
-  const mainFile = JSON.parse(content).main || 'index';
-  return mainFile.substring(0, mainFile.lastIndexOf('.'));
+  let mainFile;
+  try {
+    const content = fs.readFileSync(path.resolve(nodeModulePath, 'package.json'), {encoding: 'utf8'});
+    mainFile = JSON.parse(content).main || 'index';
+  }
+  catch(_e) {
+    // if failed it must not a package root but a file.
+    return path.resolve(`${nodeModulePath}.js`);
+  }
+  return `${mainFile.substring(0, mainFile.lastIndexOf('.'))}.js`;
 };
 
 const getProjectPath = (activePanePath) => {
@@ -67,18 +75,20 @@ const getProjectPath = (activePanePath) => {
 
 const lookupLocal  = (importModule, activePanePath) => {
   const filePath = activePanePath.substring(0, activePanePath.lastIndexOf(PATH_SLASH));
-  return parseFile(importModule, {dirname: filePath})
+  return parseFile(importModule, {basedir: filePath})
     .then(results => results.length > 0 ?
       results.map(entry => entry.name) :
-      lookupCommonJs(importModule, filePath))
+      lookupCommonJs(`${importModule}.js`, filePath))
     .catch(() => {
-      return lookupCommonJs(importModule, filePath);
+      return lookupCommonJs(`${importModule}.js`, filePath);
     });
 };
 
-const lookupCommonJs = (importModule, projectPath) => {
-  const absoluteFile = path.resolve(projectPath, `${importModule}.js`);
-  return Object.keys(require(path.normalize(absoluteFile)));
+const lookupCommonJs = (importFile, projectPath) => {
+  const absoluteFile = path.resolve(projectPath, importFile);
+  const importedObj = require(path.normalize(absoluteFile));
+  return (typeof importedObj === "object") ? Object.keys(importedObj)
+    : (typeof importedObj === "function") ? [importedObj.name] : [importedObj];
 }
 
 module.exports = {
