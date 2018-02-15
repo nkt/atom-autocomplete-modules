@@ -1,3 +1,7 @@
+## V1.11.0
+ * Upgraded dependency that handles the esm read
+ * Handle imports of JS files from node_modules. Fixed #91.
+
 ## v1.10.0
  * Added activation support for package [language-typescript](https://atom.io/packages/language-typescript)
  
