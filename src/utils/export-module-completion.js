@@ -6,7 +6,8 @@ const fs = require('fs');
 const PATH_SLASH = process.platform === 'win32' ? '\\' : '/';
 
 const escapeRegExp = require('lodash.escaperegexp');
-const { parseModule, parseFile } = require('esm-exports');
+const parseModule = require('esm-exports').module;
+const parseFile = require('esm-exports').file;
 
 const getRealExportPrefix = (prefix, line) => {
   try {
@@ -43,7 +44,7 @@ const getExports = (activePanePath, prefix, importModule) => {
 
 const lookupGlobal = (importModule, activePanePath) => {
   const projectPath = getProjectPath(activePanePath);
-  return parseModule(importModule, {dirname: projectPath})
+  return parseModule(importModule, {basedir: projectPath})
     .then(results => {
       if (results.length > 0) {
         return results.map(entry => entry.name);
@@ -67,7 +68,7 @@ const getProjectPath = (activePanePath) => {
 
 const lookupLocal  = (importModule, activePanePath) => {
   const filePath = activePanePath.substring(0, activePanePath.lastIndexOf(PATH_SLASH));
-  return parseFile(importModule, {dirname: filePath})
+  return parseFile(importModule, {basedir: filePath})
     .then(results => results.length > 0 ?
       results.map(entry => entry.name) :
       lookupCommonJs(importModule, filePath))
