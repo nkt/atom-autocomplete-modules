@@ -6,8 +6,7 @@ const fs = require('fs');
 const PATH_SLASH = process.platform === 'win32' ? '\\' : '/';
 
 const escapeRegExp = require('lodash.escaperegexp');
-const parseModule = require('esm-exports').module;
-const parseFile = require('esm-exports').file;
+const { module: parseModule, file: parseFile } = require('esm-exports');
 
 const getRealExportPrefix = (prefix, line) => {
   try {
