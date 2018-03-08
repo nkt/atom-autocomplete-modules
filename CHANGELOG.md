@@ -1,3 +1,6 @@
+## v1.12.0
+ * Upgrade to [auto-complete v4 API](https://github.com/atom/autocomplete-plus/wiki/Provider-API#api-400)
+ * Fixes issue when the search prefix starts with a `{` symbol.
 ## V1.11.0
  * Upgraded dependency that handles the esm read
  * Handle imports of JS files from node_modules. Fixed #91.
