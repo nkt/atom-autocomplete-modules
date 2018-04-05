@@ -266,8 +266,14 @@ class CompletionProvider {
 
   lookupbabelPluginModuleResolver(prefix, activePanePath) {
     const projectPath = this.getProjectPath(activePanePath);
-    if (projectPath) {
-      return findBabelConfig(projectPath).then(({config}) => {
+
+    if (!projectPath) return;
+
+    const suggestionsTotal = [];
+    let currentPath = path.dirname(activePanePath);
+
+    while (currentPath.startsWith(projectPath)) {
+      const currentSuggestions = findBabelConfig(currentPath).then(({config}) => {
         if (config && Array.isArray(config.plugins)) {
           // Grab the v1 (module-alias) or v2 (module-resolver) plugin configuration
           const pluginConfig = config.plugins.find(p => p[0] === 'module-alias' || p[0] === 'babel-plugin-module-alias') ||
@@ -334,7 +340,14 @@ class CompletionProvider {
 
         return [];
       });
+
+      suggestionsTotal.push(currentSuggestions);
+      currentPath = path.resolve(currentPath, '../');
     }
+
+    return Promise
+      .all(suggestionsTotal)
+      .then(list => list.reduce((acc, suggestions) => acc.concat(suggestions), []));
   }
 }
 
