@@ -27,10 +27,8 @@ This package only activates if one of the following grammars/languages are being
 * [language-javascript](https://atom.io/packages/language-javascript)
 * [language-babel](https://atom.io/packages/language-babel)
 * [language-coffee-script](https://atom.io/packages/language-coffee-script)
-* [language-ts](https://atom.io/packages/language-ts)
-* [language-typescript-grammars-only](https://atom.io/packages/language-typescript-grammars-only)
-* [language-typescript](https://atom.io/packages/language-typescript)
-* [atom-typescript](https://atom.io/packages/atom-typescript)
+
+If you're using TypeScript, we suggest to use [atom-typescript](https://atom.io/packages/atom-typescript) or [ide-typescript](https://atom.io/packages/ide-typescript) packages, which are way better as it uses the TS-server. 
 
 If this package doesn't seem to be working, check that you are using one of these.
 If you want another grammar/language to be supported, please submit an issue.
