@@ -1,6 +1,6 @@
 {
   "name": "autocomplete-modules",
-  "main": "./src/main",
+  "main": "./lib/main.js",
   "version": "2.1.0",
   "description": "Autocomplete for require/import statements",
   "keywords": [
@@ -29,20 +29,11 @@
   "devDependencies": {
     "eslint": "3.6.1"
   },
-  "scripts": {
-    "pretest": "eslint src/",
-    "test": "exit 0"
-  },
   "providedServices": {
     "autocomplete.provider": {
       "versions": {
         "4.0.0": "getCompletionProvider"
       }
     }
-  },
-  "activationHooks": [
-    "language-javascript:grammar-used",
-    "language-babel:grammar-used",
-    "language-coffee-script:grammar-used"
-  ]
+  }
 }
