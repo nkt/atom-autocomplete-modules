@@ -1,6 +1,5 @@
 const subject = require('../../lib/utils/lookup-alias');
-const path = require('path');
-const basePath = path.resolve('../fixtures');
+const { fixturesBasePath: basePath } = require('../spec-helper');
 
 const aliases = [{
   expose: '@sub',
@@ -18,7 +17,7 @@ describe('lookupAlias', () => {
       expect(results.length).toBe(1);
 
       expect(results[0].prefixWithoutAlias).toBe('subfile');
-      expect(results[0].pathToAlias).toBe(`${basePath}/subfolder`)
+      expect(results[0].pathToAlias).toBe(`${basePath}/subfolder`);
       done();
     });
   });
