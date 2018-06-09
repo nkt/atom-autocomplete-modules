@@ -1,7 +1,6 @@
 const { fixturesBasePath: basePath } = require('../spec-helper');
-
 const subject = require('../../lib/utils/lookup-commonjs');
-console.log(basePath);
+
 describe('lookupCommonjs', () => {
   describe('function export', () => {
     it('should return word unamed for an un-named function', () => {
