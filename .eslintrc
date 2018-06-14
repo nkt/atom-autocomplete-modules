@@ -10,6 +10,12 @@
     "atomtest": true
   },
   "globals": {
-    "atom": false
+    "atom": false,
+    "describe": false,
+    "beforeEach": false,
+    "it": false,
+    "jasmine": false,
+    "expect": false,
+    "console": false
   }
 }
