@@ -16,6 +16,7 @@
     "it": false,
     "jasmine": false,
     "expect": false,
-    "console": false
+    "console": false,
+    "spyOn": false
   }
 }

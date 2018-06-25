@@ -8,7 +8,7 @@ const lookupAlias = require('../../lib/utils/lookup-alias');
 describe('module lookup: babel',() => {
   let subject;
   let findBabelConfigMock = jasmine.createSpy('findBabelConfig');
-  let localLookupStub = { lookup: (prefix, path) => ({text: path, displayText: prefix}) };
+  let localLookupStub = { lookup: (prefix, path) => Promise.resolve([{text: path, displayText: prefix}]) };
 
   beforeEach(() => {
     subject = new (require('../../lib/lookups/module/babel'))
@@ -48,7 +48,7 @@ describe('module lookup: babel',() => {
           expect(results.length).toBe(1);
           expect(results[0].text).toBe(`${base}/subfolder/innerFolder`);
         });
-      }).catch(e => console.error(e));
+      }).catch(e => { throw new Error(e); });
     }));
   });
 
@@ -75,7 +75,7 @@ describe('module lookup: babel',() => {
           expect(results.length).toBe(1);
           expect(results[0].text).toBe(`${base}/subfolder/innerFolder`);
         });
-      }).catch(e => console.error(e));
+      }).catch(e => { throw new Error(e); });
     }));
 
     describe('with custom root directories', () => {
@@ -96,7 +96,7 @@ describe('module lookup: babel',() => {
               expect(results.length).toBe(1);
               expect(results[0].text).toBe(`${base}/subfolder/innerFolder`);
             });
-          }).catch(e => console.error(e));
+          }).catch(e => { throw new Error(e); });
         }));
     });
   });

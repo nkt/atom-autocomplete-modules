@@ -1,5 +1,5 @@
 const subject = require('../../lib/utils/path-helpers');
-const path = require('path');
+
 const { fixturesBasePath: basePath } = require('../spec-helper');
 
 describe('path-helpers', function () {
