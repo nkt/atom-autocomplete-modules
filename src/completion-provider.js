@@ -14,11 +14,14 @@ const LINE_REGEXP = /(?:^|\s)require\(['"]|^import\s.+from\s+["']|^import\s+["']
 
 const SELECTOR = [
   '.source.js',
+  'javascript',
   '.source.coffee'
 ];
 const SELECTOR_DISABLE = [
   '.source.js .comment',
-  '.source.js .keyword'
+  'javascript comment',
+  '.source.js .keyword',
+  'javascript keyword'
 ];
 
 class CompletionProvider {
