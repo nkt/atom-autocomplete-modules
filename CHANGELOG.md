@@ -1,3 +1,6 @@
+## v2.1.0
+ * Include selector for [tree-sitter](https://github.com/tree-sitter/tree-sitter) language scope.
+
 ## v2.0.0
  * **Breaking Change!** Removed TypeScript support. [Recommend to use suggested packages](https://github.com/nkt/atom-autocomplete-modules#troubleshooting).
 
