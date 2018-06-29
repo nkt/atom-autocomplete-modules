@@ -1,9 +1,14 @@
 const path = require('path');
+const Promise = require('bluebird');
 
 module.exports = {
   fixturesBasePath: path.resolve( __dirname, './fixtures'),
 
-  getProjectPathStub: function(p) { return path.resolve( __dirname, './fixtures'); },
+  getProjectPathStub: function() { return path.resolve( __dirname, './fixtures'); },
+
+  localLookupStub: { lookup: (prefix, path) =>
+    Promise.resolve([{text: path, displayText: prefix}])
+  },
 
   async: function(run) {
     return function () {

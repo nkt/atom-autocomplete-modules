@@ -1,4 +1,4 @@
-const { getProjectPathStub, fixturesBasePath: base, async } = require('../spec-helper');
+const { getProjectPathStub, fixturesBasePath: base, async, localLookupStub } = require('../spec-helper');
 const Promise = require('bluebird');
 
 // This module is pretty crucial to how babelmodule operates
@@ -8,7 +8,6 @@ const lookupAlias = require('../../lib/utils/lookup-alias');
 describe('module lookup: babel',() => {
   let subject;
   let findBabelConfigMock = jasmine.createSpy('findBabelConfig');
-  let localLookupStub = { lookup: (prefix, path) => Promise.resolve([{text: path, displayText: prefix}]) };
 
   beforeEach(() => {
     subject = new (require('../../lib/lookups/module/babel'))

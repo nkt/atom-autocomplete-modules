@@ -30,6 +30,11 @@ describe('path-helpers', function () {
         filePath: `${basePath}/subfolder/innerFolder/function.js}`,
         module: '../../object',
         assert: `${basePath}/`
+      }, {
+        story: 'absolute',
+        filePath: `${basePath}/subfolder/innerFolder/function.js}`,
+        module: 'this',
+        assert: `${basePath}/subfolder/innerFolder/`
       }
     ]
     testCases.forEach((tc) => {

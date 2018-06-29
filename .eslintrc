@@ -13,6 +13,8 @@
     "atom": false,
     "describe": false,
     "beforeEach": false,
+    "runs": false,
+    "waitsFor": false,
     "it": false,
     "jasmine": false,
     "expect": false,
