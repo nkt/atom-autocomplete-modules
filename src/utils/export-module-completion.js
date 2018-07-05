@@ -1,5 +1,5 @@
 const ES6_IMPORT_FROM_REGEX = /import\s+.*\s+from\s+['"](.*)['"]/;
-const CJS_IMPORT_FROM_REGEX = /require\(['"](.*)['"]\)/;
+const CJS_IMPORT_FROM_REGEX = /require\([`'"](.*)[`'"]\)/;
 
 const path = require('path');
 const fs = require('fs');
