@@ -10,7 +10,7 @@ const findBabelConfig = require('find-babel-config');
 const internalModules = require('./utils/internal-modules');
 const { getRealExportPrefix, getImportModule, getExports } = require('./utils/export-module-completion');
 
-const LINE_REGEXP = /(?:^|\s)require\(['"]|^import\s.+from\s+["']|^import\s+["']|export\s+(?:\*|{[a-zA-Z0-9_$,\s]+})+\s+from|}\s*from\s*['"]/;
+const LINE_REGEXP = /(?:^|\s)require\([`'"]|^import\s.+from\s+["']|^import\s+["']|export\s+(?:\*|{[a-zA-Z0-9_$,\s]+})+\s+from|}\s*from\s*['"]/;
 
 const SELECTOR = [
   '.source.js',
@@ -93,7 +93,7 @@ class CompletionProvider {
 
   getRealImportPrefix(prefix, line) {
     try {
-      const cjsRealPrefixRegExp = new RegExp(`require\\(['"]((?:.+?)*${escapeRegExp(prefix)})`);
+      const cjsRealPrefixRegExp = new RegExp(`require\\([`'"]((?:.+?)*${escapeRegExp(prefix)})`);
       const es6RealPrefixRegExp = new RegExp(`(?:from|import)\\s+['"]((?:.+?)*${escapeRegExp(prefix)})`);
       const realPrefixMathes = cjsRealPrefixRegExp.exec(line) || es6RealPrefixRegExp.exec(line);
       if (!realPrefixMathes) {
