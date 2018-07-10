@@ -34,6 +34,12 @@ describe('regex-patterns', () => {
   });
 
   describe('regexOnCjsModule', () => {
+    it('should return module if no prefix',() => {
+      const regex = subject.regexOnCjsModule('');
+      const result = regex.exec(`const {} = require('this-should-show')`);
+      expect(result[1]).toBe('this-should-show');
+    });
+
     const testCases = [
       { text: `require('${prefix}`, assert: `${prefix}` },
       { text: `require('more/stuff${prefix}')`, assert: `more/stuff${prefix}` },
@@ -57,6 +63,12 @@ describe('regex-patterns', () => {
   });
 
   describe('regexOnEs6Module', () => {
+    it('should return module if no prefix',() => {
+      const regex = subject.regexOnEs6Module('');
+      const result = regex.exec(`import {} from '../this-should-show'`);
+      expect(result[1]).toBe('../this-should-show');
+    });
+
     const testCases = [
       { text: `from "${prefix}"`, assert: `${prefix}` },
       { text: `from './test-${prefix}`, assert: `./test-${prefix}` },

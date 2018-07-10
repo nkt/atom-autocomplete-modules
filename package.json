@@ -1,7 +1,7 @@
 {
   "name": "autocomplete-modules",
   "main": "./lib/main.js",
-  "version": "2.1.0",
+  "version": "2.1.0-b.1",
   "description": "Autocomplete for require/import statements",
   "keywords": [
     "javascript",
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "bluebird": "3.5.1",
-    "esm-exports": "^2.0.3",
+    "esm-exports": "^2.3.0",
     "find-babel-config": "1.1.0",
     "fuzzaldrin": "2.1.0",
     "lodash.escaperegexp": "4.1.2",

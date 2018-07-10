@@ -1,6 +1,6 @@
-const subject = require('../../lib/utils/path-helpers');
+  const subject = require('../../lib/utils/path-helpers');
 
-const { fixturesBasePath: basePath } = require('../spec-helper');
+const { fixturesBasePath: basePath, async } = require('../spec-helper');
 
 describe('path-helpers', function () {
   describe('getProjectPath', () => {
@@ -48,6 +48,8 @@ describe('path-helpers', function () {
   describe('removeExtension', () => {
     const testCases = [
       { ext: 'js', fileName: 'test.js', assert: 'test' },
+      { ext: 'js', fileName: 'testjs.js', assert: 'testjs' },
+      { ext: 'js', fileName: 'testjs', assert: 'testjs' },
       { ext: 'es6', fileName: 'test.es6', assert: 'test' },
       { ext: 'jsx', fileName: 'test.jsx', assert: 'test' },
       { ext: 'coffee', fileName: 'test.coffee', assert: 'test' },
@@ -55,9 +57,28 @@ describe('path-helpers', function () {
       { ext: 'tsx', fileName: 'test.tsx', assert: 'test' }
     ];
     testCases.forEach((tc) => {
-      it(`should remove the extension ${tc.ext} from filename ${tc.fileName}`, () => {
+      const itRunner = tc.fit || it;
+      itRunner(`should remove the extension ${tc.ext} from filename ${tc.fileName}`, () => {
         expect(subject.removeExtension(tc.fileName)).toBe(tc.assert);
       });
     });
+  });
+
+  describe('resolveFileFullPath', () => {
+    it(`should return file's full path if file exist`, async((done) => {
+      subject.resolveFileFullPath('./subfolder/innerFolder/react.tsx', basePath).then((result) => {
+        done(() => {
+          expect(result).toBe(`${basePath}/subfolder/innerFolder/react.tsx`);
+        });
+      });
+    }));
+
+    it(`should throw an error if file does not exist`, async((done) => {
+      subject.resolveFileFullPath('./subfolder/innerFolder/react.js', basePath).then().catch(x => {
+          done(() => {
+            expect(x).toBeDefined();
+          });
+      });
+    }));
   });
 });

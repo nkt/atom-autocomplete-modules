@@ -68,10 +68,11 @@ describe('module lookup: local',() => {
       subject.getList('./node_modules/package/', `${base}/testbed.js`)
       .then((results) => {
         done(() => {
-          expect(results.length).toBe(3);
+          expect(results.length).toBe(4);
           expect(results.some(r => r.text === 'file1')).toBe(true);
           expect(results.some(r => r.text === 'file2')).toBe(true);
-          expect(results.some(r => r.text === 'file3')).toBe(true);
+          expect(results.some(r => r.text === 'main')).toBe(true);
+          expect(results.some(r => r.text === 'package.json')).toBe(true);
         });
       }).catch(e => { throw new Error(e); });
     }));
