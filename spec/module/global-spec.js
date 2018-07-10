@@ -70,6 +70,16 @@ describe('module lookup: global',() => {
         }).catch(e => { throw new Error(e); });
       }));
 
+      it('should return match for partial prefix', async((done) => {
+        subject.getList('pack', `${base}/testbed.js`)
+        .then((results) => {
+          done(() => {
+            expect(results.length).toBe(1);
+            expect(results.some(s => s.text === 'package')).toBe(true);
+          });
+        }).catch(e => { throw new Error(e); });
+      }));
+
       it('should return all if no prefix', async((done) => {
         subject.getList('', `${base}/testbed.js`)
         .then((results) => {
