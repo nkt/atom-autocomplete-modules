@@ -1,3 +1,6 @@
+## v2.1.2
+ * Wrap findbabelConfig's lib with bluebird. Thanks @remhume!
+
 ## v2.1.1
  * Major Refactor and restructure to improve code maintainability.
  
