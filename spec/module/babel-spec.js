@@ -1,5 +1,4 @@
 const { getProjectPathStub, fixturesBasePath: base, async, localLookupStub } = require('../spec-helper');
-const Promise = require('bluebird');
 
 // This module is pretty crucial to how babelmodule operates
 // Use the fixtures folder as your test dummy
