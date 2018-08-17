@@ -1,0 +1,24 @@
+{
+  "root": true,
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "env": {
+    "node": true,
+    "atomtest": true
+  },
+  "globals": {
+    "atom": false,
+    "describe": false,
+    "beforeEach": false,
+    "runs": false,
+    "waitsFor": false,
+    "it": false,
+    "jasmine": false,
+    "expect": false,
+    "console": false,
+    "spyOn": false
+  }
+}
