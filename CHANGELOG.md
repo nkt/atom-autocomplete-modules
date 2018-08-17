@@ -1,3 +1,10 @@
+## v2.1.1
+ * Major Refactor and restructure to improve code maintainability.
+ 
+This should not break any current functionality. **If it does please do report it ASAP**.
+
+Pre-pend your issue with `[Regression]` so that we can triage it quickly.
+        
 ## v2.1.0
  * Include selector for [tree-sitter](https://github.com/tree-sitter/tree-sitter) language scope.
 
