@@ -8,6 +8,7 @@ describe('regex-patterns', () => {
       // require
       { text: `require('')`, assert: true },
       { text: `require("ok")`, assert: true },
+      { text: 'require(`ok`)', assert: true },
       { text: ` require('');`, assert: true },
       { text: ` require("")`, assert: true },
       { text: `require `, assert: false },
@@ -42,6 +43,7 @@ describe('regex-patterns', () => {
 
     const testCases = [
       { text: `require('${prefix}`, assert: `${prefix}` },
+      { text: `require(\`${prefix}`, assert: `${prefix}` },
       { text: `require('more/stuff${prefix}')`, assert: `more/stuff${prefix}` },
       { text: `require('../${prefix}')`, assert: `../${prefix}` },
       { text: `require("/more/stuff/${prefix}")`, assert: `/more/stuff/${prefix}` },
