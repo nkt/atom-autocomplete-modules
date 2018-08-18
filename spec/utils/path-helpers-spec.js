@@ -22,19 +22,24 @@ describe('path-helpers', function () {
         assert: `${basePath}/`
       }, {
         story: '"../" relative',
-        filePath: `${basePath}/subfolder/innerFolder/function.js}`,
+        filePath: `${basePath}/subfolder/innerFolder/function.js`,
         module: '../namedFunction',
         assert: `${basePath}/subfolder/`
       }, {
         story: '"../../" relative',
-        filePath: `${basePath}/subfolder/innerFolder/function.js}`,
+        filePath: `${basePath}/subfolder/innerFolder/function.js`,
         module: '../../object',
         assert: `${basePath}/`
       }, {
         story: 'absolute',
-        filePath: `${basePath}/subfolder/innerFolder/function.js}`,
+        filePath: `${basePath}/subfolder/innerFolder/function.js`,
         module: 'this',
         assert: `${basePath}/subfolder/innerFolder/`
+      }, {
+        story: 'a directory',
+        filePath: `${basePath}/subfolder/innerFolder`,
+        module: './',
+        assert: `${basePath}/subfolder/innerFolder`
       }
     ]
     testCases.forEach((tc) => {

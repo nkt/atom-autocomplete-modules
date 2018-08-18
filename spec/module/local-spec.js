@@ -52,6 +52,18 @@ describe('module lookup: local',() => {
       }).catch(e => { throw new Error(e); });
     }));
 
+    it('should return list of exports if the filePath is a directory', async((done) => {
+      subject.getList('./', `${base}/subfolder`)
+      .then((results) => {
+        done(() => {
+          expect(results.length).toBe(3);
+          expect(results.some(r => r.text === 'innerFolder')).toBe(true);
+          expect(results.some(r => r.text === 'namedFunction')).toBe(true);
+          expect(results.some(r => r.text === 'unamedFunction')).toBe(true);
+        });
+      }).catch(e => { throw new Error(e); });
+    }));
+
     it('should return list of exports in a relative parent', async((done) => {
       subject.getList('../', `${base}/subfolder/innerFolder/function.js`)
       .then((results) => {

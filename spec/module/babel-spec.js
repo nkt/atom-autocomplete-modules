@@ -1,3 +1,7 @@
+// localLookupStub returns the text of what the path it will be looking up
+// Doesn't really return the actual result from the service
+// This is fair enough from a unit test point of view
+// If this is too brittle, we can convert it into a proper integration test.
 const { getProjectPathStub, fixturesBasePath: base, async, localLookupStub } = require('../spec-helper');
 
 // This module is pretty crucial to how babelmodule operates
@@ -78,24 +82,41 @@ describe('module lookup: babel',() => {
 
     describe('with custom root directories', () => {
         beforeEach(() => {
-          v2Config.config.plugins[1] = {
-            "root": ["./subfolder"],
-            "alias": {
-              "wrong": "./subfolder/innerFolder",
-              "inny": "./innerFolder" }
-          };
+          v2Config = { config: {
+              'plugins': [
+                ["module-resolver", {
+                  "root": ["./subfolder"],
+                  "alias": {
+                    "wrong": "./other_modules/something",
+                    "inny": "./subfolder/innerFolder" }
+                }]
+              ]}
+            };
           findBabelConfigMock.andReturn(Promise.resolve(v2Config));
         });
 
-        it('should return aliased suggestions', async((done) => {
+        it('should return aliased suggestions and root suggestions', async((done) => {
           subject.getList('inny/function', `${base}/testbed.js`)
           .then((results) => {
             done(() => {
-              expect(results.length).toBe(1);
-              expect(results[0].text).toBe(`${base}/subfolder/innerFolder`);
+              expect(results.length).toBe(2);
             });
           }).catch(e => { throw new Error(e); });
         }));
+
+        it('should return root suggestions', async(done => {
+          subject
+          .getList('namedFunction', `${base}/testbed.js`)
+          .then(results => {
+            done(() => {
+                expect(results).toHaveLength(1);
+                expect(results[0].text).toBe(`${base}/subfolder`);
+            });
+          })
+          .catch(e => {
+            throw new Error(e);
+          });
+      }));
     });
   });
 });
