@@ -1,3 +1,6 @@
+## v2.1.3
+ * Fix issue with not checking from root #99
+  * Thank you @remhume for the QA
 ## v2.1.2
  * Wrap findbabelConfig's lib with bluebird. Thanks @remhume!
 
