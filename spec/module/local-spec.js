@@ -1,13 +1,13 @@
 const { fixturesBasePath: base, async } = require('../spec-helper');
 const Promise = require('bluebird');
 const Readdir = Promise.promisify(require('fs').readdir);
-const { getModuleDir, removeExtension } = require('../../lib/utils/path-helpers');
+const { getModuleDir, removeExtension, extractPrefixFrom } = require('../../lib/utils/path-helpers');
 
 describe('module lookup: local',() => {
   let subject;
   beforeEach(() => {
     subject = new (require('../../lib/lookups/module/local'))
-      (Readdir, getModuleDir, removeExtension);
+      (Readdir, getModuleDir, removeExtension, extractPrefixFrom);
   });
 
   describe('trigger', () => {
@@ -24,6 +24,21 @@ describe('module lookup: local',() => {
     it('should not trigger lookup on module aliases', () => {
       const result = subject.isNeeded('commonjs/something');
       expect(result).toBe(false);
+    });
+  });
+
+  describe('massage prefix', () => {
+    it('should remove relative pathing', () => {
+      const resultSingle = subject.massagePrefix('./test');
+      expect(resultSingle).toBe('test');
+
+      const resultDouble = subject.massagePrefix('../test');
+      expect(resultDouble).toBe('test');
+    });
+
+    it('should remove parent directory', () => {
+      const result = subject.massagePrefix('./parent/test');
+      expect(result).toBe('test');
     });
   });
 
