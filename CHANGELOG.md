@@ -1,3 +1,6 @@
+## v2.1.4
+ * (module-local) Massage prefix to remove parent folder or relative formats
+ 
 ## v2.1.3
  * Fix issue with not checking from root #99
   * Thank you @remhume for the QA
