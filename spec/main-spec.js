@@ -3,7 +3,6 @@ const CompletionProvider = require('../lib/completion-provider');
 
 describe('atom-autocomplete-modules', function () {
   let subject;
-  let editor, editorElement;
   beforeEach(() => {
     waitsForPromise(() =>
     Promise.all([
@@ -16,8 +15,6 @@ describe('atom-autocomplete-modules', function () {
       atom.workspace.open('testbed.js'));
     runs(() => {
       subject = atom.packages.getActivePackage('autocomplete-modules').mainModule.getCompletionProvider();
-      editor = atom.workspace.getActiveTextEditor();
-      editorElement = atom.views.getView(editor);
     });
   });
 
