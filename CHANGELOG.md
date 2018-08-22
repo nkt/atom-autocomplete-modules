@@ -1,3 +1,7 @@
+## v2.1.5
+ * (module-babel) Remove prior directory from the prefix to compare to the suggestions
+ * (module-local) skip searching local files when current file has no file file path
+
 ## v2.1.4
  * (module-local) Massage prefix to remove parent folder or relative formats
  
