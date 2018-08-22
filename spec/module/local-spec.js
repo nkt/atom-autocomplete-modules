@@ -112,5 +112,14 @@ describe('module lookup: local',() => {
         });
       }).catch(e => { throw new Error(e); });
     }));
+
+    it('should return no results if the path does not exist', async((done) => {
+      subject.getList('./fake', `${base}/fakeFolder/test.js`)
+      .then((results) => {
+        done(() => {
+          expect(results.length).toBe(0);
+        });
+      }).catch(e => { throw new Error(e); });
+    }));
   });
 });

@@ -40,6 +40,11 @@ describe('path-helpers', function () {
         filePath: `${basePath}/subfolder/innerFolder`,
         module: './',
         assert: `${basePath}/subfolder/innerFolder`
+      }, {
+        story: 'non-existing',
+        filePath: `${basePath}/fake/innerFolder`,
+        module: './',
+        assert: ''
       }
     ]
     testCases.forEach((tc) => {
