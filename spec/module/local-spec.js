@@ -103,5 +103,14 @@ describe('module lookup: local',() => {
         });
       }).catch(e => { throw new Error(e); });
     }));
+
+    it('should return no results if the current file has no path (ie untitled)', async((done) => {
+      subject.getList('./node_modules/package/', null)
+      .then((results) => {
+        done(() => {
+          expect(results.length).toBe(0);
+        });
+      }).catch(e => { throw new Error(e); });
+    }));
   });
 });
