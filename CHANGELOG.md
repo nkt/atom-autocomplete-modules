@@ -1,3 +1,7 @@
+## v2.1.6
+ * (module-local) Handle invalid path imports - gracefully
+ * (export-local) Handle invalid imported path - gracefully
+ 
 ## v2.1.5
  * (module-babel) Remove prior directory from the prefix to compare to the suggestions
  * (module-local) skip searching local files when current file has no file file path
