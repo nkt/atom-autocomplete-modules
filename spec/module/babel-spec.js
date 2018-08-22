@@ -117,6 +117,31 @@ describe('module lookup: babel',() => {
             throw new Error(e);
           });
       }));
+
+        describe('root as .', () => {
+          beforeEach(() => {
+            v2Config.config.plugins = [
+                  ["module-resolver", {
+                    "root": ["."]
+                  }]
+                ];
+            findBabelConfigMock.andReturn(Promise.resolve(v2Config));
+          });
+
+          it('should return suggestions from base', async(done => {
+            subject
+            .getList('subfolder/innerFolder', `${base}/testbed.js`)
+            .then(results => {
+              done(() => {
+                  expect(results).toHaveLength(1);
+                  expect(results[0].text).toBe(`${base}`);
+              });
+            })
+            .catch(e => {
+              throw new Error(e);
+            });
+        }));
+        });
     });
   });
 });
