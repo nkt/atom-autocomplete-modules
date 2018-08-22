@@ -3,6 +3,7 @@
 // This is fair enough from a unit test point of view
 // If this is too brittle, we can convert it into a proper integration test.
 const { getProjectPathStub, fixturesBasePath: base, async, localLookupStub } = require('../spec-helper');
+const { extractPrefixFrom } = require('../../lib/utils/path-helpers');
 
 // This module is pretty crucial to how babelmodule operates
 // Use the fixtures folder as your test dummy
@@ -14,7 +15,7 @@ describe('module lookup: babel',() => {
 
   beforeEach(() => {
     subject = new (require('../../lib/lookups/module/babel'))
-      (getProjectPathStub, require('path'),
+      (getProjectPathStub, extractPrefixFrom, require('path'),
       findBabelConfigMock, localLookupStub, lookupAlias);
   });
 
@@ -30,6 +31,18 @@ describe('module lookup: babel',() => {
           expect(result.length).toBe(0);});
       });
     }));
+  });
+
+  describe('massage prefix', () => {
+    it('should remove parent directory', () => {
+      const result = subject.massagePrefix('inny/function');
+      expect(result).toBe('function');
+    });
+
+    it('should remove all directories', () => {
+      const result = subject.massagePrefix('inny/');
+      expect(result).toBe('');
+    });
   });
 
   describe('v1 - babel-plugin-module-alias', () => {
@@ -117,6 +130,31 @@ describe('module lookup: babel',() => {
             throw new Error(e);
           });
       }));
+
+        describe('root as .', () => {
+          beforeEach(() => {
+            v2Config.config.plugins = [
+                  ["module-resolver", {
+                    "root": ["."]
+                  }]
+                ];
+            findBabelConfigMock.andReturn(Promise.resolve(v2Config));
+          });
+
+          it('should return suggestions from base', async(done => {
+            subject
+            .getList('subfolder/innerFolder', `${base}/testbed.js`)
+            .then(results => {
+              done(() => {
+                  expect(results).toHaveLength(1);
+                  expect(results[0].text).toBe(`${base}`);
+              });
+            })
+            .catch(e => {
+              throw new Error(e);
+            });
+          }));
+        });
     });
   });
 });
