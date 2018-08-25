@@ -44,18 +44,19 @@ describe('module lookup: local',() => {
 
   describe('lookup', () => {
     // Using fixture folder as test case
-    it('should return list of exports in a folder level', async((done) => {
+    it('should return list of sibling level files of a folder', async((done) => {
       subject.getList('./node_modules/package', `${base}/testbed.js`)
       .then((results) => {
         done(() => {
-          expect(results.length).toBe(2);
+          expect(results.length).toBe(3);
           expect(results.some(r => r.text === 'commonjs')).toBe(true);
           expect(results.some(r => r.text === 'package')).toBe(true);
+          expect(results.some(r => r.text === 'symfolder')).toBe(true);
         });
       }).catch(e => { throw new Error(e); });
     }));
 
-    it('should return list of exports in a relative folder', async((done) => {
+    it('should return list of files in a relative folder', async((done) => {
       subject.getList('./subfolder/', `${base}/testbed.js`)
       .then((results) => {
         done(() => {
