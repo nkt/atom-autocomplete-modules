@@ -84,7 +84,8 @@ describe('module lookup: global',() => {
         subject.getList('', `${base}/testbed.js`)
         .then((results) => {
           done(() => {
-            expect(results.length).toBe(internalModules.length + 2);
+            // 3 is the 2 node_modules folder and the symlink
+            expect(results.length).toBe(internalModules.length + 3);
             expect(results.some(s => s.text === 'package')).toBe(true);
           });
         }).catch(e => { throw new Error(e); });
