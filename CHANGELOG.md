@@ -1,3 +1,6 @@
+## v2.2.0
+ * (regex) Match prefix in `require` that uses grave accent. Thanks @iofjuupasli!
+
 ## v2.1.6
  * (module-local) Handle invalid path imports - gracefully
  * (export-local) Handle invalid imported path - gracefully
