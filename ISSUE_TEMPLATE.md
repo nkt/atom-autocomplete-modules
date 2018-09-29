@@ -21,6 +21,39 @@ Do you want to ask a question? Are you looking for support? The Atom message boa
 
 ### Steps to Reproduce
 
+
+#### Folder structure and import statement
+
+<!--
+Include a rough folder structure from root to your problematic file and the module location you are referencing to.
+
+eg:
+-->
+
+```
+.                    //Root
+├── ...              // irrelevant but may want to give some more context
+├── main
+│   └── current.js   // current folder
+└── reference.js     // file being referenced one folder up
+```
+
+<!--
+Provide import statement as an screenshot would be best, if not code snippet is fine `|` denoting cursor.
+-->
+
+```javascript
+// current.js
+
+import {some| } from '../reference'
+```
+
+```javascript
+//reference.js
+
+module.exports = { something: () => {} };
+```
+
 1. [First Step]
 2. [Second Step]
 3. [and so on...]
@@ -51,3 +84,4 @@ Also, please include the OS and what version of the OS you're running.
 ### Additional Information
 
 Any additional information, configuration or data that might be necessary to reproduce the issue.
+Any plugins or tools used that may affect import statements.
