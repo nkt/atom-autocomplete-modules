@@ -1,0 +1,10 @@
+* text=auto
+
+/spec export-ignore
+/.circleci export-ignore
+/.editorconfig export-ignore
+/.eslintrc export-ignore
+/.gitignore export-ignore
+/.gitattributes export-ignore
+/CHANGELOG.md export-ignore
+/ISSUE_TEMPLATE.md export-ignore
