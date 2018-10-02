@@ -18,6 +18,11 @@ describe('module lookup: global',() => {
       expect(result).toBe(true);
     });
 
+    it('should trigger lookup on empty string', () => {
+      const result = subject.isNeeded('');
+      expect(result).toBe(true);
+    });
+
     it('should not trigger lookup on relative import', () => {
       const result = subject.isNeeded('./commonjs/something');
       expect(result).toBe(false);
@@ -70,12 +75,13 @@ describe('module lookup: global',() => {
         }).catch(e => { throw new Error(e); });
       }));
 
-      it('should return match for partial prefix', async((done) => {
+      it('should return all matches for partial prefix (case insensitive)', async((done) => {
         subject.getList('pack', `${base}/testbed.js`)
         .then((results) => {
           done(() => {
-            expect(results.length).toBe(1);
+            expect(results.length).toBe(2);
             expect(results.some(s => s.text === 'package')).toBe(true);
+            expect(results.some(s => s.text === 'defaultPack')).toBe(true);
           });
         }).catch(e => { throw new Error(e); });
       }));
