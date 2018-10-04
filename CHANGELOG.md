@@ -1,3 +1,9 @@
+## v2.2.1
+ * (module-global) Reorder the global list to display dependencies first
+ * (utils-lookup-alias) Improve handling of invalid alias conditions
+ * (lookups-general) Handle gracefully when lookups fail
+ * (export-global) Handle module lookup when cjs is detected 
+
 ## v2.2.0
  * (regex) Match prefix in `require` that uses grave accent. Thanks @iofjuupasli!
 
