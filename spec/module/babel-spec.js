@@ -93,6 +93,21 @@ describe('module lookup: babel',() => {
       }).catch(e => { throw new Error(e); });
     }));
 
+    describe('No alias found (invalid config)', () => {
+      beforeEach(() => {
+        spyOn(localLookupStub, 'lookup').andReturn(Promise.resolve(false));
+      });
+
+      it('should return no results', async((done) => {
+        subject.getList('inny/function', `${base}/testbed.js`)
+        .then(result => {
+          done(() => {
+            expect(result.length).toBe(0);
+          });
+        });
+      }));
+    });
+
     describe('with custom root directories', () => {
         beforeEach(() => {
           v2Config = { config: {

@@ -21,6 +21,21 @@ describe('module lookup: webpack on webpack.config.js',() => {
         });
       });
     }));
+
+    describe('No alias found (invalid config)', () => {
+      beforeEach(() => {
+        spyOn(localLookupStub, 'lookup').andReturn(Promise.resolve(false));
+      });
+
+      it('should return no results', async((done) => {
+        subject.getList('Inner', `${base}/testbed.js`, config)
+        .then(result => {
+          done(() => {
+            expect(result.length).toBe(0);
+          });
+        });
+      }));
+    });
   });
 
   describe('resolve.modules', () => {

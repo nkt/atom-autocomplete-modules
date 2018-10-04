@@ -22,4 +22,13 @@ describe('lookupAlias', () => {
       });
     });
   }));
+  describe('Throws false for error', () => {
+    it('should when no alias given', async((done) => {
+      subject('@sub/subfile', basePath, null).catch((result) => {
+        done(() => {
+          expect(result).toBe(false);
+        });
+      });
+    }));
+  });
 });
