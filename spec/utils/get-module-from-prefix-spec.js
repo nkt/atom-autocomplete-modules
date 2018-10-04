@@ -13,4 +13,11 @@ describe('getRealImportPrefix', () => {
 
     expect(result).toBe(false);
   });
+
+  it('should return empty if prefix was on module', () => {
+    const result = subject('', `import Something from ''`);
+
+    expect(result).toBe('');
+  });
+
 });

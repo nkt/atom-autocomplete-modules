@@ -16,6 +16,7 @@ describe('regex-patterns', () => {
       { text: `.require('test')`, assert: false },
       // import
       { text: `import defaultExport from "module-name"`, assert: true },
+      { text: `import defaultExport from ''`, assert: true },
       { text: `import * as name from "module-name";`, assert: true },
       { text: `import { export } from "module-name";`, assert: true },
       { text: `import { export as alias } from "module-name"`, assert: true },
