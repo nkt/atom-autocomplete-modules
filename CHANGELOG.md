@@ -1,3 +1,6 @@
+## v2.2.2
+ * (general) Remove distracting notification
+ 
 ## v2.2.1
  * (module-global) Reorder the global list to display dependencies first
  * (utils-lookup-alias) Improve handling of invalid alias conditions
