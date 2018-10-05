@@ -150,19 +150,22 @@ describe('module lookup: babel',() => {
           beforeEach(() => {
             v2Config.config.plugins = [
                   ["module-resolver", {
-                    "root": ["."]
+                    "root": ["./subfolder"]
                   }]
                 ];
+            spyOn(localLookupStub, 'lookup').andCallThrough();
             findBabelConfigMock.andReturn(Promise.resolve(v2Config));
           });
 
-          it('should return suggestions from base', async(done => {
+          it('should lookup prefix from defined root base', async(done => {
             subject
-            .getList('subfolder/innerFolder', `${base}/testbed.js`)
-            .then(results => {
+            .getList('innerFolder/a', `${base}/subfolder/namedFunction.js`)
+            .then(() => {
               done(() => {
-                  expect(results).toHaveLength(1);
-                  expect(results[0].text).toBe(`${base}`);
+                expect(localLookupStub.lookup).toHaveBeenCalledWith(
+                  './innerFolder/a',
+                  `${base}/subfolder`
+                )
               });
             })
             .catch(e => {
