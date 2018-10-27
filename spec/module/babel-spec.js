@@ -54,17 +54,16 @@ describe('module lookup: babel',() => {
             return { config: {
               'plugins': [
                 ['module-alias', [
-                  { 'src': './subfolder', 'expose': 'inny' },
-                  { 'src': './src/fake', 'expose': 'notexist' }
+                  { 'src': './', 'expose': 'inny' }
                 ]]
-              ]}, file: `${base}/subfolder/innerFolder`}
+              ]}, file: `${base}/subfolder/innerFolder/.babelrc`}
             default:
             return { config: {
               'plugins': [
                 ["module-resolver", {
                   "alias": {
                     "nonexist": "./src/fake",
-                    "inny": "./subfolder/innerFolder" }
+                    "inny": "./other_modules/something" }
                   }]
                 ]},
                 file: `${base}/.babelrc`
@@ -81,6 +80,10 @@ describe('module lookup: babel',() => {
           .then((results) => {
             done(() => {
               expect(results.length).toBe(2);
+              expect(results.some(result =>
+                result.text === `${base}/other_modules/something`)).toBe(true);
+              expect(results.some(result =>
+                result.text === `${base}/subfolder/innerFolder`)).toBe(true);
             });
           }).catch(e => { throw new Error(e); });
         }));
