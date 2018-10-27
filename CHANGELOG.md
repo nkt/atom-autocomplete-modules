@@ -1,3 +1,6 @@
+## v2.2.4
+ * (module-babel): Use base pathing relative to babelrc to resolve modules
+
 ## v2.2.3
  * (module-babel) Recurse only through all available unique babelrc files for import
    * Resolves #99
