@@ -1,3 +1,7 @@
+## v2.2.3
+ * (module-babel) Recurse only through all available unique babelrc files for import
+   * Resolves #99
+ 
 ## v2.2.2
  * (general) Remove distracting notification
  
