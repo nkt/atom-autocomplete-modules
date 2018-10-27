@@ -45,6 +45,48 @@ describe('module lookup: babel',() => {
     });
   });
 
+  describe('nested babelrc', () => {
+    describe('with different config files', () => {
+      beforeEach(() => {
+        let nestedMock = function(path) {
+          switch (path) {
+            case `${base}/subfolder/innerFolder`:
+            return { config: {
+              'plugins': [
+                ['module-alias', [
+                  { 'src': './subfolder', 'expose': 'inny' },
+                  { 'src': './src/fake', 'expose': 'notexist' }
+                ]]
+              ]}, file: `${base}/subfolder/innerFolder`}
+            default:
+            return { config: {
+              'plugins': [
+                ["module-resolver", {
+                  "alias": {
+                    "nonexist": "./src/fake",
+                    "inny": "./subfolder/innerFolder" }
+                  }]
+                ]},
+                file: `${base}/.babelrc`
+              };
+            }
+          };
+          subject = new (require('../../lib/lookups/module/babel'))
+          (getProjectPathStub, extractPrefixFrom, require('path'),
+          nestedMock, localLookupStub, lookupAlias);
+        });
+
+        it('should return 2 suggestions', async((done) => {
+          subject.getList('inny/function', `${base}/subfolder/innerFolder/testbed.js`)
+          .then((results) => {
+            done(() => {
+              expect(results.length).toBe(2);
+            });
+          }).catch(e => { throw new Error(e); });
+        }));
+    });
+  });
+
   describe('v1 - babel-plugin-module-alias', () => {
     beforeEach(() => {
       findBabelConfigMock.andReturn(Promise.resolve({ config: {
@@ -53,11 +95,11 @@ describe('module lookup: babel',() => {
             { 'src': './subfolder/innerFolder', 'expose': 'inny' },
             { 'src': './src/fake', 'expose': 'notexist' }
           ]]
-        ]}}));
+        ]}, file: `${base}/.babelrc`}));
     });
 
     it('should return aliased suggestions', async((done) => {
-      subject.getList('inny/function', `${base}/testbed.js`)
+      subject.getList('inny/function', `${base}/subfolder/namedFunction.js`)
       .then((results) => {
         done(() => {
           expect(results.length).toBe(1);
@@ -78,7 +120,8 @@ describe('module lookup: babel',() => {
                 "nonexist": "./src/fake",
                 "inny": "./subfolder/innerFolder" }
               }]
-          ]}
+          ]},
+          file: `${base}/.babelrc`
         };
       findBabelConfigMock.andReturn(Promise.resolve(v2Config));
     });
@@ -118,7 +161,8 @@ describe('module lookup: babel',() => {
                     "wrong": "./other_modules/something",
                     "inny": "./subfolder/innerFolder" }
                 }]
-              ]}
+              ]},
+              file: `${base}/.babelrc`
             };
           findBabelConfigMock.andReturn(Promise.resolve(v2Config));
         });
