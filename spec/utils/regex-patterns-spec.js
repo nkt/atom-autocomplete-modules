@@ -12,6 +12,7 @@ describe('regex-patterns', () => {
       { text: ` require('');`, assert: true },
       { text: ` require("")`, assert: true },
       { text: `const {  } = require('module');`, assert: true },
+      { text: `x=require('./myFile.js')`, assert: true },
       { text: `require `, assert: false },
       { text: `.require('test')`, assert: false },
       // import
