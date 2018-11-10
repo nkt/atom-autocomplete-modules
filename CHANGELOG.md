@@ -1,3 +1,7 @@
+## v2.2.5
+ * (module-global): Escape regex #122
+ * (autocomplete-trigger): Allow no-space between require and assignment syntax #121
+
 ## v2.2.4
  * (module-babel): Use base pathing relative to babelrc to resolve modules
 
