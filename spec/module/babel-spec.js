@@ -20,11 +20,17 @@ describe('module lookup: babel',() => {
   });
 
   describe('no config', () => {
-    beforeEach(() => {
-      // if c === null, the config wasn't found
-      findBabelConfigMock.andReturn(Promise.resolve(null));
-    });
     it('should not lookup anything', async((done) => {
+      findBabelConfigMock.andReturn(Promise.resolve(null));
+      subject.getList('someprefix', '/some/path')
+      .then(result => {
+        done(() => {
+          expect(result.length).toBe(0);});
+      });
+    }));
+
+    it('should not lookup anything when no file', async((done) => {
+      findBabelConfigMock.andReturn(Promise.resolve({ file: null }));
       subject.getList('someprefix', '/some/path')
       .then(result => {
         done(() => {
