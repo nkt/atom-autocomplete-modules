@@ -1,3 +1,6 @@
+## v2.2.6
+ * (module-global) Handle when find-babel-config result of file is null
+ 
 ## v2.2.5
  * (module-global): Escape regex #122
  * (autocomplete-trigger): Allow no-space between require and assignment syntax #121
