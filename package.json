@@ -19,6 +19,7 @@
     "atom": ">=0.174.0 <2.0.0"
   },
   "dependencies": {
+    "acorn": "^6.0.5",
     "bluebird": "3.5.1",
     "esm-exports": "^2.3.0",
     "find-babel-config": "1.1.0",
