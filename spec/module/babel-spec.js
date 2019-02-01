@@ -108,7 +108,7 @@ describe('module lookup: babel',() => {
     });
 
     it('should return aliased suggestions', async((done) => {
-      subject.getList('inny/function', `${base}/subfolder/namedFunction.js`)
+      subject.getList('inny/function', `${base}/other_modules/something/main.js`)
       .then((results) => {
         done(() => {
           expect(results.length).toBe(1);

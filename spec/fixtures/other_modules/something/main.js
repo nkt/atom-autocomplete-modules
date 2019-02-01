@@ -1,5 +1,4 @@
-// Used to check different nodejs imports
-// and to ensure file lookups do not execute code
+// Used to ensure file lookups do not execute code
 
 global.outsideTestCase = true;
 

@@ -38,18 +38,8 @@ describe('export lookup: local',() => {
       }).catch(e => { throw new Error(e); });
     }));
 
-    it('should retrieve list of all module\'s commonjs exports', async((done) => {
-      subject.getList('./subfolder/namedFunction', `${base}/testbed.js`)
-      .then(result => {
-        done(() => {
-          expect(result.length).toBe(1);
-          expect(result.find(r => r.displayText === 'named' )).toBeDefined();
-        });
-      }).catch(e => { throw new Error(e); });
-    }));
-
-    it('should not retrive any un-named module\'s exports', async((done) => {
-      subject.getList('./subfolder/unamedFunction', `${base}/testbed.js`)
+    it('should retrieve module\'s commonjs exports', async((done) => {
+      subject.getList('./node_modules/commonjs/main', `${base}/testbed.js`)
       .then(result => {
         done(() => {
           expect(result.length).toBe(1);
