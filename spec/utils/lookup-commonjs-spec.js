@@ -30,6 +30,12 @@ describe('lookupCommonjs', () => {
     })
   });
 
+  it('should not execute code when traversing files', () => {
+      subject('./other_modules/something/main', basePath);
+      expect(global.outsideTestCase).toBeUndefined();
+      expect(global.insideTestCase).toBeUndefined();
+  });
+
   it('should return no results if the file does not exist', () => {
     const result = subject('./noexist/this', `${basePath}/fake`);
     expect(result).toHaveLength(0);
