@@ -43,7 +43,7 @@ describe('export lookup: local',() => {
       .then(result => {
         done(() => {
           expect(result.length).toBe(1);
-          expect(result[0].displayText).toBe('');
+          expect(result[0].displayText).toBe('common');
         });
       }).catch(e => { throw new Error(e); });
     }));

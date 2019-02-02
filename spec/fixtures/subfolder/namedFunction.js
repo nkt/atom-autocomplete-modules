@@ -1,1 +1,1 @@
-module.exports = function named() {return true};
+module.exports = { named: function named() { return true } };

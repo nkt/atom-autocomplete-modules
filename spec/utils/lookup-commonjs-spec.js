@@ -1,15 +1,56 @@
 const { fixturesBasePath: basePath } = require('../spec-helper');
+const path = require('path');
 const subject = require('../../lib/utils/lookup-commonjs');
 
 describe('lookupCommonjs', () => {
-  describe('should show an empty return value for non-object exports',() => {
-
+  describe('literal exports',() => {
+    it('should return no named exports for exports = ', () => {
+      const result = subject('./exports/export-literal', basePath);
+      expect(result).toHaveLength(0);
+    });
   });
 
-  describe('multiple exports', () => {
-    it('should list all exports', () => {
+  describe('object exports', () => {
+    it('should work on exports = ', () => {
+      const result = subject('./exports/exports', basePath);
+      const assert = Object.keys(require(path.resolve(basePath, './exports/exports')));
+
+      expect(result).toHaveLength(assert.length);
+      assert.forEach(expectedExport => {
+        expect(result).toContain(expectedExport);
+      });
+    });
+
+    it('should work on module.exports = ', () => {
+      const result = subject('./subfolder/namedFunction', basePath);
+      const assert = Object.keys(require(path.resolve(basePath, './subfolder/namedFunction')));
+
+      expect(result).toHaveLength(assert.length);
+      assert.forEach(expectedExport => {
+        expect(result).toContain(expectedExport);
+      });
+    });
+
+    it('should work on module.exports.* = ', () => {
+      const result = subject('./exports/module-property', basePath);
+      const assert = Object.keys(require(path.resolve(basePath, './exports/module-property')));
+
+      expect(result).toHaveLength(assert.length);
+      assert.forEach(expectedExport => {
+        expect(result).toContain(expectedExport);
+      });
+    });
+  });
+
+  describe('when there is an export overriding', () => {
+    it('should take the last export only', () => {
       const result = subject('./node_modules/package/file1', basePath);
-      expect(result).toHaveLength(4);
+      const expect = require(path.resolve(basePath, './node_modules/package/file1'));
+
+      expect(result).toHaveLength(expect.length);
+      Object.keys(expect).forEach(expectedExport => {
+        expect(result).toContain(expectedExport);
+      });
     })
   });
 

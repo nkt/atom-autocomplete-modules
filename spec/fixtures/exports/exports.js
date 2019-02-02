@@ -1,0 +1,1 @@
+exports.fun = function fun() {}
