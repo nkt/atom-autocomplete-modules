@@ -1,4 +1,4 @@
-const lookupCommonJs = require('../../lib/utils/lookup-commonjs');
+const lookupCommonJs = require('../../lib/utils/lookup-exports');
 const { resolveFileFullPath } = require('../../lib/utils/path-helpers');
 const { fixturesBasePath: base, async } = require('../spec-helper');
 
@@ -7,7 +7,7 @@ describe('export lookup: local',() => {
 
   beforeEach(() => {
     subject = new (require('../../lib/lookups/export/local'))
-      (require('esm-exports').file, lookupCommonJs, resolveFileFullPath);
+      (lookupCommonJs, resolveFileFullPath);
   });
 
   describe('trigger', () => {
@@ -39,11 +39,11 @@ describe('export lookup: local',() => {
     }));
 
     it('should retrieve module\'s commonjs exports', async((done) => {
-      subject.getList('./node_modules/commonjs/main', `${base}/testbed.js`)
+      subject.getList('./exports/module-exports', `${base}/testbed.js`)
       .then(result => {
         done(() => {
-          expect(result.length).toBe(1);
-          expect(result[0].displayText).toBe('common');
+          expect(result.length).toBe(2);
+          expect(result[0].displayText).toBe('basic');
         });
       }).catch(e => { throw new Error(e); });
     }));

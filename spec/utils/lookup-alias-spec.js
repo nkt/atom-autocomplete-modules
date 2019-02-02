@@ -6,7 +6,7 @@ const aliases = [{
   src: `${basePath}/subfolder`
 }, {
   expose: '@library',
-  src: `${basePath}/node_modules/commonjs`
+  src: `${basePath}/node_modules/somepackage`
 }];
 
 describe('lookupAlias', () => {

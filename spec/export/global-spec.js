@@ -1,13 +1,14 @@
-const lookupCommonJs = require('../../lib/utils/lookup-commonjs');
-const fs = require('fs');
-const { getProjectPathStub, fixturesBasePath: base, async } = require('../spec-helper');
+const lookupExports = require('../../lib/utils/lookup-exports');
+const { fixturesBasePath: base, async } = require('../spec-helper');
+
+// using the atom package's node_module to test... too hard to currently stub the path resolution
 
 describe('export lookup: global',() => {
   let subject;
 
   beforeEach(() => {
     subject = new (require('../../lib/lookups/export/global'))
-      (require('esm-exports').module, lookupCommonJs, require('path'), fs.readFileSync, getProjectPathStub);
+      (lookupExports);
   });
 
   describe('trigger', () => {
@@ -28,20 +29,11 @@ describe('export lookup: global',() => {
   });
 
   describe('getList', () => {
-    it('should retrieve list of all module\'s ecma exports', async((done) => {
-      subject.getList('package', `${base}/testbed.js`)
+    it('should retrieve list of all module\'s exports', async((done) => {
+      subject.getList('get-exports-from-file', `${base}/testbed.js`)
       .then(result => {
         done(() => {
-          expect(result.length).toBe(3);
-        });
-      }).catch(e => { throw new Error(e); });
-    }));
-
-    it('should retrieve list of all module\'s commonjs exports', async((done) => {
-      subject.getList('commonjs', `${base}/testbed.js`)
-      .then(result => {
-        done(() => {
-          expect(result.length).toBe(1);
+          expect(result.length).toBe(2);
         });
       }).catch(e => { throw new Error(e); });
     }));

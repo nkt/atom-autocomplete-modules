@@ -48,8 +48,7 @@ describe('module lookup: local',() => {
       subject.getList('./node_modules/package', `${base}/testbed.js`)
       .then((results) => {
         done(() => {
-          expect(results.length).toBe(4);
-          expect(results.some(r => r.text === 'commonjs')).toBe(true);
+          expect(results.length).toBe(3);
           expect(results.some(r => r.text === 'package')).toBe(true);
           expect(results.some(r => r.text === 'symfolder')).toBe(true);
           expect(results.some(r => r.text === 'defaultPack')).toBe(true);

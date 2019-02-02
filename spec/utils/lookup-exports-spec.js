@@ -1,8 +1,8 @@
 const { fixturesBasePath: basePath } = require('../spec-helper');
 const path = require('path');
-const subject = require('../../lib/utils/lookup-commonjs');
+const subject = require('../../lib/utils/lookup-exports');
 
-describe('lookupCommonjs', () => {
+describe('lookupExports', () => {
   describe('literal exports',() => {
     it('should return no named exports for exports = ', () => {
       const result = subject('./exports/export-literal', basePath);
