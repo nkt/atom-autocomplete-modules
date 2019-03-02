@@ -1,1 +1,0 @@
-exports.fun = function fun() {}

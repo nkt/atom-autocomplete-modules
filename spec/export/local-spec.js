@@ -39,11 +39,11 @@ describe('export lookup: local',() => {
     }));
 
     it('should retrieve module\'s commonjs exports', async((done) => {
-      subject.getList('./exports/module-exports', `${base}/testbed.js`)
+      subject.getList('./subfolder/namedFunction', `${base}/testbed.js`)
       .then(result => {
         done(() => {
-          expect(result.length).toBe(2);
-          expect(result[0].displayText).toBe('basic');
+          expect(result.length).toBe(1);
+          expect(result[0].displayText).toBe('named');
         });
       }).catch(e => { throw new Error(e); });
     }));

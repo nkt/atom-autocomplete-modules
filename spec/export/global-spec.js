@@ -30,10 +30,10 @@ describe('export lookup: global',() => {
 
   describe('getList', () => {
     it('should retrieve list of all module\'s exports', async((done) => {
-      subject.getList('get-exports-from-file', `${base}/testbed.js`)
+      subject.getList('defaultPack', `${base}/testbed.js`)
       .then(result => {
         done(() => {
-          expect(result.length).toBe(2);
+          expect(result.length).toBe(1);
         });
       }).catch(e => { throw new Error(e); });
     }));
