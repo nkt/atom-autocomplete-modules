@@ -1,3 +1,8 @@
+## v2.3.0
+ * (export) Remove using require to check exported objects and use an AST-driven pkg
+    * To see the packages use cases, [here's a link](https://github.com/jonyeezs/extract-module-exports/tree/master/fixtures).
+ * Support flowtype files
+    * Thanks to first time contributor @lloiser!
 ## v2.2.6
  * (module-global) Handle when find-babel-config result of file is null
  

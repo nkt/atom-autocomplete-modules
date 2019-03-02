@@ -27,6 +27,7 @@ This package only activates if one of the following grammars/languages are being
 * [language-javascript](https://atom.io/packages/language-javascript)
 * [language-babel](https://atom.io/packages/language-babel)
 * [language-coffee-script](https://atom.io/packages/language-coffee-script)
+* flow extensions
 
 If you're using TypeScript, we suggest to use [atom-typescript](https://atom.io/packages/atom-typescript) or [ide-typescript](https://atom.io/packages/ide-typescript) packages, which are way better as it uses the TS-server. 
 
