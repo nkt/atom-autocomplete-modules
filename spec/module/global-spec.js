@@ -14,7 +14,7 @@ describe('module lookup: global',() => {
 
   describe('trigger', () => {
     it('should trigger lookup on package import', () => {
-      const result = subject.isNeeded('commonjs/something');
+      const result = subject.isNeeded('depsmodule/something');
       expect(result).toBe(true);
     });
 
@@ -24,12 +24,12 @@ describe('module lookup: global',() => {
     });
 
     it('should not trigger lookup on relative import', () => {
-      const result = subject.isNeeded('./commonjs/something');
+      const result = subject.isNeeded('./depsmodule/something');
       expect(result).toBe(false);
     });
 
     it('should not trigger lookup on relative import', () => {
-      const result = subject.isNeeded('../commonjs/something');
+      const result = subject.isNeeded('../depsmodule/something');
       expect(result).toBe(false);
     });
   });
@@ -39,7 +39,7 @@ describe('module lookup: global',() => {
       beforeEach(() => {
         spyOn(localLookupStub, 'lookup').andCallThrough();
       });
-      const testCases = ['commonjs/main', '/commonjs/main'];
+      const testCases = ['depsmodule/main', '/depsmodule/main'];
       testCases.forEach(tc => {
         it(`should return suggested file for ${tc}`, async((done) => {
           subject.getList(tc, `${base}/testbed.js`)
@@ -90,8 +90,8 @@ describe('module lookup: global',() => {
         subject.getList('', `${base}/testbed.js`)
         .then((results) => {
           done(() => {
-            // 4 is the 3 node_modules folder and the symlink
-            expect(results.length).toBe(internalModules.length + 4);
+            // 3 is the 2 node_modules folder and the symlink
+            expect(results.length).toBe(internalModules.length + 3);
             expect(results.some(s => s.text === 'package')).toBe(true);
           });
         }).catch(e => { throw new Error(e); });

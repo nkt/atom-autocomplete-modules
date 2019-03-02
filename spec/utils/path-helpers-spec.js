@@ -17,9 +17,9 @@ describe('path-helpers', function () {
     const testCases = [
       {
         story: '"./" relative',
-        filePath: `${basePath}/testbed.js`,
-        module: './object',
-        assert: `${basePath}/`
+        filePath: `${basePath}/node_modules/package/file1.js`,
+        module: './file2',
+        assert: `${basePath}/node_modules/package/`
       }, {
         story: '"../" relative',
         filePath: `${basePath}/subfolder/innerFolder/function.js`,
@@ -28,7 +28,7 @@ describe('path-helpers', function () {
       }, {
         story: '"../../" relative',
         filePath: `${basePath}/subfolder/innerFolder/function.js`,
-        module: '../../object',
+        module: '../../testbed',
         assert: `${basePath}/`
       }, {
         story: 'absolute',

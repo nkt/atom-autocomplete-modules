@@ -1,1 +1,1 @@
-module.exports = 'something';
+global.outsideTestCase = 1;

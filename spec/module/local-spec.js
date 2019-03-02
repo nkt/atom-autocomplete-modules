@@ -48,8 +48,7 @@ describe('module lookup: local',() => {
       subject.getList('./node_modules/package', `${base}/testbed.js`)
       .then((results) => {
         done(() => {
-          expect(results.length).toBe(4);
-          expect(results.some(r => r.text === 'commonjs')).toBe(true);
+          expect(results.length).toBe(3);
           expect(results.some(r => r.text === 'package')).toBe(true);
           expect(results.some(r => r.text === 'symfolder')).toBe(true);
           expect(results.some(r => r.text === 'defaultPack')).toBe(true);
@@ -61,22 +60,20 @@ describe('module lookup: local',() => {
       subject.getList('./subfolder/', `${base}/testbed.js`)
       .then((results) => {
         done(() => {
-          expect(results.length).toBe(3);
+          expect(results.length).toBe(2);
           expect(results.some(r => r.text === 'innerFolder')).toBe(true);
           expect(results.some(r => r.text === 'namedFunction')).toBe(true);
-          expect(results.some(r => r.text === 'unamedFunction')).toBe(true);
         });
       }).catch(e => { throw new Error(e); });
     }));
 
-    it('should return list of exports if the filePath is a directory', async((done) => {
+    it('should return list of files if the filePath is a directory', async((done) => {
       subject.getList('./', `${base}/subfolder`)
       .then((results) => {
         done(() => {
-          expect(results.length).toBe(3);
+          expect(results.length).toBe(2);
           expect(results.some(r => r.text === 'innerFolder')).toBe(true);
           expect(results.some(r => r.text === 'namedFunction')).toBe(true);
-          expect(results.some(r => r.text === 'unamedFunction')).toBe(true);
         });
       }).catch(e => { throw new Error(e); });
     }));
@@ -85,10 +82,9 @@ describe('module lookup: local',() => {
       subject.getList('../', `${base}/subfolder/innerFolder/function.js`)
       .then((results) => {
         done(() => {
-          expect(results.length).toBe(3);
+          expect(results.length).toBe(2);
           expect(results.some(r => r.text === 'innerFolder')).toBe(true);
           expect(results.some(r => r.text === 'namedFunction')).toBe(true);
-          expect(results.some(r => r.text === 'unamedFunction')).toBe(true);
         });
       }).catch(e => { throw new Error(e); });
     }));
