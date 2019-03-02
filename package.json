@@ -1,7 +1,7 @@
 {
   "name": "autocomplete-modules",
   "main": "./lib/main.js",
-  "version": "2.2.6",
+  "version": "2.3.0",
   "description": "Autocomplete for require/import statements",
   "keywords": [
     "javascript",
