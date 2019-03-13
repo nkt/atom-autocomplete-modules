@@ -1,12 +1,28 @@
 const { getProjectPathStub, fixturesBasePath: base, async, localLookupStub } = require('../spec-helper');
 // Use the fixtures folder as your test dummy
 const lookupAlias = require('../../lib/utils/lookup-alias');
+const { extractPrefixFrom } = require('../../lib/utils/path-helpers');
 
 describe('module lookup: webpack on webpack.config.js',() => {
   let subject, config = { vendors: ['node_modules'], webpackConfigFilename: 'webpack.config.alias.js' };
   beforeEach(() => {
     subject = new (require('../../lib/lookups/module/webpack'))
-      (require('lodash.get'), require('path'), localLookupStub, lookupAlias, getProjectPathStub);
+      (require('lodash.get'), require('path'), localLookupStub, lookupAlias, getProjectPathStub, extractPrefixFrom);
+  });
+  
+  describe('massage prefix', () => {
+    it('should remove relative pathing', () => {
+      const resultSingle = subject.massagePrefix('./test');
+      expect(resultSingle).toBe('test');
+
+      const resultDouble = subject.massagePrefix('../test');
+      expect(resultDouble).toBe('test');
+    });
+
+    it('should remove parent directory', () => {
+      const result = subject.massagePrefix('./parent/test');
+      expect(result).toBe('test');
+    });
   });
 
   describe('resolve.alias', () => {
